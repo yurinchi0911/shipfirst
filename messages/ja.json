@@ -1,0 +1,208 @@
+{
+  "metadata": {
+    "title": "ShipFirst",
+    "description": "バイブコーダーの最初の課金を取る場所。掲載無料・売れたら15%。"
+  },
+  "common": {
+    "brand": "ShipFirst",
+    "navProducts": "プロダクト一覧",
+    "navList": "掲載する",
+    "navListShort": "掲載",
+    "navPurchasesShort": "購入",
+    "navLogin": "ログイン",
+    "navMyPage": "メーカー",
+    "navPurchases": "購入履歴",
+    "navLogout": "ログアウト",
+    "backToHome": "トップへ戻る",
+    "backToMyPage": "マイページ",
+    "language": "言語",
+    "en": "English",
+    "ja": "日本語"
+  },
+  "home": {
+    "tagline": "バイブコーダーの最初の課金を取る場所",
+    "headline": "作れた。でも、誰も払わなかった。",
+    "headlineSub": "そのギャップを ShipFirst が埋めます。",
+    "body": "掲載は無料。売れたときだけ15%。Fair Deal バッジで退会・返金を購入前に明示できます。",
+    "ctaList": "プロダクトを掲載する（無料）",
+    "ctaBrowse": "プロダクトを探す",
+    "productsTitle": "プロダクト一覧",
+    "productsCount": "{count} 件掲載中",
+    "pillFree": "掲載無料",
+    "pillFee": "売れたら15%",
+    "pillFairDeal": "Fair Deal バッジ",
+    "supabaseHint": "Supabase を接続すると、ここに掲載プロダクトが表示されます。",
+    "empty": "まだ掲載されたプロダクトはありません。",
+    "emptyCta": "最初の1人になれます → 掲載する"
+  },
+  "login": {
+    "title": "ログイン",
+    "setupTitle": "セットアップが必要です",
+    "setupBody": "Supabase の接続情報が未設定です。.env.example を .env.local にコピーし、URL と anon key を入力してから開発サーバーを再起動してください。",
+    "errorSetup": "ログインには Supabase の設定が必要です。",
+    "errorCallback": "認証リンクの処理に失敗しました。もう一度お試しください。",
+    "cardLogin": "ログイン",
+    "cardSignup": "新規登録",
+    "cardDesc": "メーカーとしてプロダクトを掲載・管理します",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "submitLogin": "ログイン",
+    "submitSignup": "アカウントを作成",
+    "submitting": "処理中…",
+    "signupConfirm": "確認メールを送信しました。メール内のリンクを開くと続行できます。（ローカル開発では Supabase でメール確認をオフにするとすぐ使えます）",
+    "authFailed": "認証に失敗しました"
+  },
+  "maker": {
+    "title": "メーカーマイページ",
+    "welcome": "ようこそ、{name} さん",
+    "email": "メール",
+    "role": "ロール",
+    "stripe": "Stripe（Week 2）",
+    "stripeDone": "連携済み",
+    "stripePending": "未設定",
+    "stripeBannerTitle": "決済設定がまだ完了していません",
+    "stripeBannerBody": "Stripe Connect を連携するまで、購入者は支払えません。掲載・公開は今すぐできます。",
+    "stripeBannerSoon": "Stripe オンボーディング — Week 2 で接続予定",
+    "dashboardHint": "下書き・公開中のプロダクトと売上の準備は、ここから管理できます。",
+    "productsTitle": "掲載プロダクト",
+    "productsEmpty": "まだプロダクトがありません。下書きから始められます。",
+    "statTotal": "合計",
+    "statPublished": "公開中",
+    "statDraft": "下書き",
+    "accountTitle": "アカウント",
+    "salesCount": "販売 {count} 件",
+    "editProduct": "編集",
+    "listCta": "プロダクトを掲載する",
+    "newTitle": "プロダクトを掲載",
+    "newHint": "下書き保存もできます。公開するとトップ一覧に表示されます。",
+    "editTitle": "プロダクトを編集",
+    "statusDraft": "下書き",
+    "statusPublished": "公開中",
+    "draftSaved": "下書きを保存しました",
+    "viewPublic": "公開ページを見る →"
+  },
+  "account": {
+    "title": "購入履歴",
+    "eyebrow": "バイヤーアカウント",
+    "subtitle": "ShipFirst で購入したプロダクトの一覧です。",
+    "week2Hint": "決済は Week 2 で有効化されます。購入後、ここに履歴が表示されます。",
+    "empty": "まだ購入がありません。プロダクトを探して、Week 2 の決済開始後に再度ご確認ください。",
+    "browseProducts": "プロダクトを探す",
+    "unknownProduct": "プロダクト",
+    "backHome": "トップへ戻る",
+    "makerDashboard": "メーカーダッシュボード",
+    "status": {
+      "pending": "処理中",
+      "paid": "支払い済み",
+      "refunded": "返金済み",
+      "failed": "失敗"
+    }
+  },
+  "purchaseComplete": {
+    "title": "購入完了",
+    "headline": "ご購入ありがとうございます",
+    "body": "購入完了後の画面（プレースホルダ）です。",
+    "week2Note": "Stripe Checkout と注文詳細は Week 2 で接続します。",
+    "sessionLabel": "セッション",
+    "viewPurchases": "購入履歴を見る",
+    "backHome": "トップへ戻る"
+  },
+  "product": {
+    "back": "← 一覧へ",
+    "trialDays": "{days}日間トライアル",
+    "beforeBuy": "購入前に確認",
+    "cancelUrl": "退会・キャンセル",
+    "refundPolicy": "返金ポリシー",
+    "trialTerms": "トライアル条件",
+    "buySoon": "購入する（Week 2 で有効化）",
+    "listYours": "自分も掲載する"
+  },
+  "card": {
+    "oneTime": "買い切り",
+    "subscription": "月額サブスク"
+  },
+  "badges": {
+    "fairDeal": "Fair Deal",
+    "fairDealTip": "退会URL・返金ポリシー・価格が購入前に明示されています",
+    "earlyBacker": "Early Backer",
+    "earlyBackerTip": "ローンチ直後のプロダクト。Early Backer 期間中です",
+    "slotsLeft": "· 残り{n}枠"
+  },
+  "form": {
+    "errorCheck": "入力内容を確認してください",
+    "errorFairDeal": "Fair Deal の条件を満たしていないため公開できません",
+    "errorNotFound": "プロダクトが見つかりません",
+    "sectionBasic": "基本情報",
+    "name": "プロダクト名 *",
+    "namePlaceholder": "例: FocusTimer Pro",
+    "description": "説明 *",
+    "descriptionHintOk": "{n}文字（OK）",
+    "descriptionHintNeed": "{n}文字（公開にはあと{need}文字）",
+    "descriptionPlaceholder": "何ができるか、誰向けか、どんな価値があるかを書いてください（公開時は80文字以上）",
+    "price": "価格（USD）*",
+    "billingType": "課金タイプ",
+    "trialDays": "トライアル（日数）",
+    "trialTerms": "トライアル条件 *",
+    "trialTermsPlaceholder": "トライアル終了後、いつ課金されるかを明記（50文字以上）",
+    "deliveryUrl": "購入後の案内URL（任意）",
+    "deliveryPlaceholder": "https://あなたのサイト/download",
+    "sectionFairDeal": "Fair Deal（信頼の明示）",
+    "fairDealHint": "公開時に Fair Deal バッジを付けるには、退会URL・返金ポリシー・価格を明確にする必要があります。",
+    "fairDealPreviewOk": "公開すれば Fair Deal の条件を満たします",
+    "fairDealPreviewFail": "公開前に以下を修正してください",
+    "fairDealPreviewHint": "入力に合わせてリアルタイムで判定します。",
+    "cancelUrl": "退会・キャンセルURL *",
+    "cancelPlaceholder": "https://example.com/cancel",
+    "refundTemplate": "返金ポリシー",
+    "refundPreview": "テンプレート本文",
+    "refundSupplement": "追記（任意・Fair Deal用には30文字以上推奨）",
+    "refundSupplementPlaceholder": "サポート連絡先、処理日数など",
+    "refundCustom": "返金ポリシー全文 *",
+    "refundCustomPlaceholder": "100文字以上で記載",
+    "subAck": "ユーザーはいつでもサブスクリプションをキャンセルできることを明記します *",
+    "saveDraft": "下書き保存",
+    "publish": "公開する（Fair Deal 審査）",
+    "saving": "保存中…",
+    "publishing": "公開中…"
+  },
+  "refundTemplates": {
+    "1": {
+      "label": "14日間・全額返金（理由不問）",
+      "body": "ご購入から14日以内であれば、理由を問わず全額返金いたします。\n返金をご希望の場合は、購入時のメールアドレスからサポートまでご連絡ください。"
+    },
+    "2": {
+      "label": "7日間・未使用のみ返金",
+      "body": "ご購入から7日以内かつ、サービスを实质性に利用していない場合に限り返金いたします。\nアカウント作成・主要機能の利用が確認された場合は返金対象外となることがあります。"
+    },
+    "3": {
+      "label": "返金不可（デジタル即時提供）",
+      "body": "デジタル商品の性質上、購入確定後の返金は原則お受けしておりません。\n購入前に機能・価格・課金条件をご確認のうえお申し込みください。"
+    },
+    "4": {
+      "label": "カスタム（自分で全文を書く）"
+    }
+  },
+  "fairDeal": {
+    "nameShort": "プロダクト名は3文字以上必要です",
+    "descriptionShort": "説明は80文字以上必要です",
+    "priceInvalid": "価格は1ドル以上にしてください",
+    "cancelUrlHttps": "退会URLは https:// で始まる必要があります",
+    "refundPolicy": "返金ポリシーは100文字以上、またはテンプレート＋追記で30文字以上必要です",
+    "subAck": "サブスクの場合「いつでもキャンセル可能」への同意が必要です",
+    "trialTerms": "トライアルありの場合、条件説明は50文字以上必要です",
+    "notPublished": "公開状態のプロダクトのみ Fair Deal 認定されます"
+  },
+  "validation": {
+    "nameMin": "プロダクト名は3文字以上",
+    "descriptionMin": "説明は80文字以上",
+    "priceRequired": "価格を入力してください",
+    "pricePositive": "0より大きい数値を入力してください",
+    "urlInvalid": "有効なURLを入力してください",
+    "urlHttps": "https:// で始まるURLにしてください",
+    "trialTermsMin": "トライアル条件は50文字以上",
+    "ackRequired": "チェックが必要です",
+    "refundCustomMin": "カスタム返金ポリシーは100文字以上",
+    "supplementMin": "追記する場合は30文字以上",
+    "nameRequired": "プロダクト名を入力してください"
+  }
+}

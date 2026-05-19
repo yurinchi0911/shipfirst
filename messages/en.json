@@ -1,0 +1,208 @@
+{
+  "metadata": {
+    "title": "ShipFirst",
+    "description": "Where vibe coders get their first paying customer. Free to list · 15% when you sell."
+  },
+  "common": {
+    "brand": "ShipFirst",
+    "navProducts": "Products",
+    "navList": "List a product",
+    "navListShort": "List",
+    "navPurchasesShort": "Bought",
+    "navLogin": "Log in",
+    "navMyPage": "Maker",
+    "navPurchases": "Purchases",
+    "navLogout": "Log out",
+    "backToHome": "Back to home",
+    "backToMyPage": "Back to my page",
+    "language": "Language",
+    "en": "English",
+    "ja": "日本語"
+  },
+  "home": {
+    "tagline": "Where vibe coders get their first paying customer",
+    "headline": "You shipped it. Nobody paid.",
+    "headlineSub": "ShipFirst closes that gap.",
+    "body": "Free to list. 15% only when you sell. Fair Deal badges show cancel & refund terms upfront.",
+    "ctaList": "List your product (free)",
+    "ctaBrowse": "Browse products",
+    "productsTitle": "Products",
+    "productsCount": "{count} listed",
+    "pillFree": "Free to list",
+    "pillFee": "15% when you sell",
+    "pillFairDeal": "Fair Deal badges",
+    "supabaseHint": "Connect Supabase to show listed products here.",
+    "empty": "No products yet.",
+    "emptyCta": "Be the first → List now"
+  },
+  "login": {
+    "title": "Log in",
+    "setupTitle": "Setup required",
+    "setupBody": "Supabase is not configured. Copy .env.example to .env.local, add your URL and anon key, then restart the dev server.",
+    "errorSetup": "Log in requires Supabase configuration.",
+    "errorCallback": "We couldn't complete the auth link. Please try again.",
+    "cardLogin": "Log in",
+    "cardSignup": "Sign up",
+    "cardDesc": "Manage your products as a maker",
+    "email": "Email",
+    "password": "Password",
+    "submitLogin": "Log in",
+    "submitSignup": "Create account",
+    "submitting": "Working…",
+    "signupConfirm": "We sent a confirmation email. Open the link to continue. (For local dev, turn off email confirmation in Supabase.)",
+    "authFailed": "Authentication failed"
+  },
+  "maker": {
+    "title": "Maker dashboard",
+    "welcome": "Welcome, {name}",
+    "email": "Email",
+    "role": "Role",
+    "stripe": "Stripe (Week 2)",
+    "stripeDone": "Connected",
+    "stripePending": "Not set up",
+    "stripeBannerTitle": "Payments not set up yet",
+    "stripeBannerBody": "Buyers can't pay until Stripe Connect is linked. You can still list and publish products now.",
+    "stripeBannerSoon": "Stripe onboarding — coming in Week 2",
+    "dashboardHint": "Manage drafts, published products, and payouts from here.",
+    "productsTitle": "Your products",
+    "productsEmpty": "No products yet. Create your first listing — drafts are fine.",
+    "statTotal": "Total",
+    "statPublished": "Published",
+    "statDraft": "Drafts",
+    "accountTitle": "Account",
+    "salesCount": "{count} sales",
+    "editProduct": "Edit",
+    "listCta": "List a product",
+    "newTitle": "List a product",
+    "newHint": "You can save a draft. Publishing shows your product on the homepage.",
+    "editTitle": "Edit product",
+    "statusDraft": "Draft",
+    "statusPublished": "Published",
+    "draftSaved": "Draft saved",
+    "viewPublic": "View public page →"
+  },
+  "account": {
+    "title": "My purchases",
+    "eyebrow": "Buyer account",
+    "subtitle": "Products you've bought on ShipFirst.",
+    "week2Hint": "Checkout goes live in Week 2. Your purchase history will appear here after you buy.",
+    "empty": "No purchases yet. Browse products and check back after Week 2 checkout launches.",
+    "browseProducts": "Browse products",
+    "unknownProduct": "Product",
+    "backHome": "Back to home",
+    "makerDashboard": "Maker dashboard",
+    "status": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "refunded": "Refunded",
+      "failed": "Failed"
+    }
+  },
+  "purchaseComplete": {
+    "title": "Purchase complete",
+    "headline": "Thank you for your purchase",
+    "body": "This is a placeholder screen for the post-checkout flow.",
+    "week2Note": "Stripe Checkout and order details will be wired in Week 2.",
+    "sessionLabel": "Session",
+    "viewPurchases": "View purchases",
+    "backHome": "Back to home"
+  },
+  "product": {
+    "back": "← Back to list",
+    "trialDays": "{days}-day trial",
+    "beforeBuy": "Before you buy",
+    "cancelUrl": "Cancel / unsubscribe",
+    "refundPolicy": "Refund policy",
+    "trialTerms": "Trial terms",
+    "buySoon": "Buy now (Week 2)",
+    "listYours": "List your own"
+  },
+  "card": {
+    "oneTime": "One-time",
+    "subscription": "Subscription"
+  },
+  "badges": {
+    "fairDeal": "Fair Deal",
+    "fairDealTip": "Price, cancel URL, and refund policy are shown before purchase",
+    "earlyBacker": "Early Backer",
+    "earlyBackerTip": "Launch window — support early sales",
+    "slotsLeft": "· {n} spots left"
+  },
+  "form": {
+    "errorCheck": "Please check your input",
+    "errorFairDeal": "Can't publish until Fair Deal requirements are met",
+    "errorNotFound": "Product not found",
+    "sectionBasic": "Basics",
+    "name": "Product name *",
+    "namePlaceholder": "e.g. FocusTimer Pro",
+    "description": "Description *",
+    "descriptionHintOk": "{n} chars (OK)",
+    "descriptionHintNeed": "{n} chars ({need} more to publish)",
+    "descriptionPlaceholder": "What it does, who it's for, why it's worth paying for (80+ chars to publish)",
+    "price": "Price (USD) *",
+    "billingType": "Billing",
+    "trialDays": "Trial (days)",
+    "trialTerms": "Trial terms *",
+    "trialTermsPlaceholder": "When billing starts after trial (50+ chars)",
+    "deliveryUrl": "Post-purchase URL (optional)",
+    "deliveryPlaceholder": "https://yoursite.com/download",
+    "sectionFairDeal": "Fair Deal (trust)",
+    "fairDealHint": "To earn the Fair Deal badge when publishing, cancel URL, refund policy, and price must be clear.",
+    "fairDealPreviewOk": "Ready for Fair Deal when you publish",
+    "fairDealPreviewFail": "Fix these before publishing for Fair Deal",
+    "fairDealPreviewHint": "Live check — updates as you type.",
+    "cancelUrl": "Cancel / unsubscribe URL *",
+    "cancelPlaceholder": "https://example.com/cancel",
+    "refundTemplate": "Refund policy",
+    "refundPreview": "Template preview",
+    "refundSupplement": "Extra terms (optional · 30+ chars recommended for Fair Deal)",
+    "refundSupplementPlaceholder": "Support contact, processing time, etc.",
+    "refundCustom": "Full refund policy *",
+    "refundCustomPlaceholder": "100+ characters",
+    "subAck": "I state that users can cancel their subscription at any time *",
+    "saveDraft": "Save draft",
+    "publish": "Publish (Fair Deal check)",
+    "saving": "Saving…",
+    "publishing": "Publishing…"
+  },
+  "refundTemplates": {
+    "1": {
+      "label": "14-day full refund (any reason)",
+      "body": "If you request a refund within 14 days of purchase, we will refund the full amount for any reason.\nContact support from the email used at checkout."
+    },
+    "2": {
+      "label": "7-day refund if unused",
+      "body": "Refunds within 7 days are available only if you have not materially used the service.\nIf significant usage is detected, a refund may be denied."
+    },
+    "3": {
+      "label": "No refunds (digital delivery)",
+      "body": "Due to the nature of digital goods, we generally do not offer refunds after purchase.\nPlease review features, pricing, and billing terms before buying."
+    },
+    "4": {
+      "label": "Custom (write your own)"
+    }
+  },
+  "fairDeal": {
+    "nameShort": "Product name must be at least 3 characters",
+    "descriptionShort": "Description must be at least 80 characters",
+    "priceInvalid": "Price must be at least $1",
+    "cancelUrlHttps": "Cancel URL must start with https://",
+    "refundPolicy": "Refund policy needs 100+ chars, or template + 30+ chars extra",
+    "subAck": "Subscription listings require the cancel-anytime acknowledgment",
+    "trialTerms": "Trial terms must be at least 50 characters",
+    "notPublished": "Only published products can earn Fair Deal"
+  },
+  "validation": {
+    "nameMin": "Name must be at least 3 characters",
+    "descriptionMin": "Description must be at least 80 characters",
+    "priceRequired": "Enter a price",
+    "pricePositive": "Enter a number greater than 0",
+    "urlInvalid": "Enter a valid URL",
+    "urlHttps": "URL must start with https://",
+    "trialTermsMin": "Trial terms must be at least 50 characters",
+    "ackRequired": "This checkbox is required",
+    "refundCustomMin": "Custom refund policy must be at least 100 characters",
+    "supplementMin": "If you add extra terms, use at least 30 characters",
+    "nameRequired": "Enter a product name"
+  }
+}

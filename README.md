@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ShipFirst
 
-## Getting Started
+バイブコーダー向けマーケットプレイス MVP（掲載無料・売上15%・Fair Deal バッジ）。
 
-First, run the development server:
+## 開発
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # Supabase の値を入力
+npm run dev                    # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| コマンド | 説明 |
+|----------|------|
+| `npm run dev` | 開発サーバー（ポート 3000） |
+| `npm run build` | 本番ビルド |
+| `npm run test` | Fair Deal ユニットテスト |
+| `npm run seed` | デモプロダクト投入（要 service role） |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ドキュメント
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`../docs/shipfirst/` に設計・タスク一覧があります。
 
-## Learn More
+- [Week 1 タスク](../docs/shipfirst/04-week1-tasks.md)
+- [Vercel デプロイ](../docs/shipfirst/05-deploy-vercel.md)
+- [Week 2 タスク](../docs/shipfirst/06-week2-tasks.md)
 
-To learn more about Next.js, take a look at the following resources:
+## 本番 URL
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| | |
+|--|--|
+| サイト | https://shipfirst.vercel.app |
+| Vercel | https://vercel.com/yurinchis-projects/shipfirst/9q4BNpxce5SQGqWouerniEHypW3r |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Vercel デプロイ（要約）
 
-## Deploy on Vercel
+1. Root Directory = `shipfirst`（モノレポの場合）
+2. 環境変数: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_APP_URL=https://shipfirst.vercel.app`
+3. Supabase Redirect: `https://shipfirst.vercel.app/en/auth/callback` と `/ja/auth/callback`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+詳細は [05-deploy-vercel.md](../docs/shipfirst/05-deploy-vercel.md)。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Week 1 スコープ
+
+- 認証・掲載・Fair Deal・Early Backer 表示
+- Stripe 購入は Week 2
