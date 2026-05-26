@@ -16,3 +16,15 @@ export function getAppUrl(): string {
       : "http://localhost:3000")
   );
 }
+
+export function isStripeConfigured(): boolean {
+  const secret = process.env.STRIPE_SECRET_KEY?.trim();
+  const publishable = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?.trim();
+  return Boolean(secret?.startsWith("sk_") && publishable?.startsWith("pk_"));
+}
+
+export function getPlatformFeePercent(): number {
+  const raw = process.env.PLATFORM_FEE_PERCENT?.trim();
+  const n = raw ? Number.parseInt(raw, 10) : 15;
+  return Number.isFinite(n) && n >= 0 && n <= 100 ? n : 15;
+}
