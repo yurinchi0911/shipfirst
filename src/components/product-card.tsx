@@ -24,45 +24,52 @@ export function ProductCard({ product }: { product: ProductListItem }) {
   return (
     <Link
       href={`/products/${product.id}`}
-      className="group flex flex-col rounded-2xl border bg-card p-5 transition-all duration-150 hover:shadow-md hover:-translate-y-px"
+      className="group flex flex-col rounded-2xl border border-border/80 bg-card p-5 transition-all duration-200 hover:border-border hover:shadow-lg hover:shadow-black/[0.06] hover:-translate-y-0.5 active:translate-y-0 active:shadow-md"
     >
-      <div className="mb-3 flex flex-wrap gap-1.5">
-        {product.fair_deal && <FairDealBadge />}
-        {showEarlyBacker && (
-          <EarlyBackerBadge slotsLeft={earlyBackerSlotsLeft(product)} />
-        )}
-        {makerConnected && <RevenueBadge />}
-        {graduating && <GraduatingBadge />}
-      </div>
+      {/* Badges */}
+      {(product.fair_deal || showEarlyBacker || makerConnected || graduating) && (
+        <div className="mb-3 flex flex-wrap gap-1.5">
+          {product.fair_deal && <FairDealBadge />}
+          {showEarlyBacker && <EarlyBackerBadge slotsLeft={earlyBackerSlotsLeft(product)} />}
+          {makerConnected && <RevenueBadge />}
+          {graduating && <GraduatingBadge />}
+        </div>
+      )}
 
-      <h3 className="text-base font-semibold leading-snug group-hover:underline">
+      {/* Title */}
+      <h3 className="text-[0.95rem] font-semibold leading-snug tracking-tight group-hover:text-primary transition-colors">
         {product.name}
       </h3>
 
+      {/* Maker */}
       {product.maker?.display_name && (
-        <p className="mt-1 text-xs text-muted-foreground">
+        <p className="mt-1 text-xs text-muted-foreground/70">
           {product.maker.display_name}
         </p>
       )}
 
-      <p className="mt-2 flex-1 text-sm text-muted-foreground">
+      {/* Description */}
+      <p className="mt-2.5 flex-1 text-sm leading-relaxed text-muted-foreground">
         {truncateDescription(product.description)}
       </p>
 
-      <div className="mt-4 flex items-baseline justify-between gap-2 border-t pt-4">
-        <span className="text-lg font-bold tabular-nums">
+      {/* Footer */}
+      <div className="mt-5 flex items-baseline justify-between gap-2 border-t border-border/60 pt-4">
+        <span className="text-lg font-bold tabular-nums tracking-tight">
           {formatPrice(product.price_cents, product.currency)}
         </span>
-        <span className="text-xs text-muted-foreground">
-          {product.billing_type === "subscription" ? t("subscription") : t("oneTime")}
-        </span>
+        <div className="flex items-center gap-2.5 text-xs text-muted-foreground">
+          <span>
+            {product.billing_type === "subscription" ? t("subscription") : t("oneTime")}
+          </span>
+          {product.cheer_count > 0 && (
+            <>
+              <span aria-hidden className="opacity-40">·</span>
+              <span>{product.cheer_count} ♥</span>
+            </>
+          )}
+        </div>
       </div>
-
-      {product.cheer_count > 0 && (
-        <p className="mt-1.5 text-xs text-muted-foreground">
-          {product.cheer_count} ♥
-        </p>
-      )}
     </Link>
   );
 }

@@ -131,8 +131,9 @@ CREATE POLICY "Maker delete posts"
   ON public.maker_posts FOR DELETE USING (auth.uid() = maker_id);
 
 -- ─── profiles: 公開プロフィール読み取り許可 ─────────────────────────────────
--- 既存の "Users read own profile" ポリシーを削除して公開読み取りに変更
-DROP POLICY IF EXISTS "Users read own profile" ON public.profiles;
+DROP POLICY IF EXISTS "Users read own profile"     ON public.profiles;
+DROP POLICY IF EXISTS "Public read profiles"       ON public.profiles;
+DROP POLICY IF EXISTS "Users update own profile"   ON public.profiles;
 
 CREATE POLICY "Public read profiles"
   ON public.profiles FOR SELECT USING (true);

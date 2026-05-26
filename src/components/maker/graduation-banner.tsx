@@ -1,3 +1,5 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 import { Trophy, AlertCircle } from "lucide-react";
 import { formatGraduationProgress } from "@/lib/graduation";

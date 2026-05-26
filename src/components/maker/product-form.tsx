@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FairDealPreview } from "@/components/maker/fair-deal-preview";
+import { PRODUCT_CATEGORIES, PROBLEM_TAGS } from "@/lib/products";
 
 export type ProductFormDefaults = {
   id?: string;
@@ -27,6 +28,8 @@ export type ProductFormDefaults = {
   refund_policy_custom: string;
   cancel_policy_ack: boolean;
   delivery_url: string;
+  category: string;
+  problem_tags: string[];
 };
 
 const initialActionState: ProductActionState = {};
@@ -74,6 +77,8 @@ export function ProductForm({
   );
   const [trialTerms, setTrialTerms] = useState(defaults.trial_terms);
   const [cancelPolicyAck, setCancelPolicyAck] = useState(defaults.cancel_policy_ack);
+  const [category, setCategory] = useState(defaults.category);
+  const [problemTags, setProblemTags] = useState<string[]>(defaults.problem_tags);
 
   const fieldErrors = state.fieldErrors ?? {};
   const isCustomRefund = templateId === 4;
@@ -203,6 +208,65 @@ export function ProductForm({
             placeholder={t("deliveryPlaceholder")}
           />
           <FieldError errors={fieldErrors.delivery_url} />
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-lg font-semibold">{t("sectionDiscovery")}</h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="category">{t("categoryLabel")}</Label>
+            <select
+              id="category"
+              name="category"
+              className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="">{t("categoryPlaceholder")}</option>
+              {PRODUCT_CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="space-y-2">
+          <Label>{t("problemTagsLabel")}</Label>
+          <div className="flex flex-wrap gap-2">
+            {PROBLEM_TAGS.map((tag) => {
+              const checked = problemTags.includes(tag);
+              return (
+                <label
+                  key={tag}
+                  className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-1.5 text-sm transition-colors select-none ${
+                    checked
+                      ? "border-primary/50 bg-primary/10 text-primary"
+                      : "border-border text-muted-foreground hover:border-primary/30"
+                  } ${!checked && problemTags.length >= 3 ? "opacity-40 cursor-not-allowed" : ""}`}
+                >
+                  <input
+                    type="checkbox"
+                    name="problem_tags"
+                    value={tag}
+                    checked={checked}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        if (problemTags.length < 3) {
+                          setProblemTags([...problemTags, tag]);
+                        }
+                      } else {
+                        setProblemTags(problemTags.filter((t) => t !== tag));
+                      }
+                    }}
+                    className="sr-only"
+                  />
+                  {tag}
+                </label>
+              );
+            })}
+          </div>
         </div>
       </section>
 

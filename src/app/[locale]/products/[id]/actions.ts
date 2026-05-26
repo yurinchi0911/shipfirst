@@ -59,19 +59,17 @@ export async function toggleCheer(
   }
 
   await supabase.from("cheer_reactions").insert({ product_id: productId, user_id: user.id });
-  await supabase
+  const { data: latestProd } = await supabase
     .from("products")
     .select("cheer_count")
     .eq("id", productId)
-    .single()
-    .then(({ data }) => {
-      if (data) {
-        supabase
-          .from("products")
-          .update({ cheer_count: data.cheer_count + 1 })
-          .eq("id", productId);
-      }
-    });
+    .single();
+  if (latestProd) {
+    await supabase
+      .from("products")
+      .update({ cheer_count: latestProd.cheer_count + 1 })
+      .eq("id", productId);
+  }
   revalidateProduct(productId);
   return { success: true, cheered: true };
 }

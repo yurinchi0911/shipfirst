@@ -44,13 +44,18 @@ async function getComments(productId: string): Promise<Comment[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("product_comments")
-    .select("id, product_id, author_id, body, created_at, updated_at, author:profiles!author_id(display_name)")
+    .select(
+      "id, product_id, author_id, body, created_at, updated_at, author:profiles!author_id(display_name)"
+    )
     .eq("product_id", productId)
     .order("created_at", { ascending: true });
   return (data ?? []) as unknown as Comment[];
 }
 
-async function getFeatureRequests(productId: string, userId: string | null): Promise<FeatureRequest[]> {
+async function getFeatureRequests(
+  productId: string,
+  userId: string | null
+): Promise<FeatureRequest[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("feature_requests")
@@ -65,8 +70,13 @@ async function getFeatureRequests(productId: string, userId: string | null): Pro
       .from("feature_request_votes")
       .select("request_id")
       .eq("user_id", userId)
-      .in("request_id", requests.map((r) => r.id));
-    const votedSet = new Set((votes ?? []).map((v: { request_id: string }) => v.request_id));
+      .in(
+        "request_id",
+        requests.map((r) => r.id)
+      );
+    const votedSet = new Set(
+      (votes ?? []).map((v: { request_id: string }) => v.request_id)
+    );
     return requests.map((r) => ({ ...r, user_voted: votedSet.has(r.id) }));
   }
   return requests;
@@ -107,7 +117,6 @@ export default async function ProductDetailPage({
     getFeatureRequests(id, user?.id ?? null),
   ]);
 
-  // Check if user has cheered
   let userCheered = false;
   let userWishlisted = false;
   if (user) {
@@ -133,137 +142,201 @@ export default async function ProductDetailPage({
   const maker = Array.isArray(product.maker) ? product.maker[0] : product.maker;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
+      {/* Back */}
       <Link
         href="/"
-        className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "mb-6")}
+        className={cn(
+          buttonVariants({ variant: "ghost", size: "sm" }),
+          "mb-8 -ml-2"
+        )}
       >
-        {t("back")}
+        ← {t("back")}
       </Link>
 
-      {/* Badges */}
-      <div className="mb-4 flex flex-wrap gap-2">
-        {product.fair_deal && <FairDealBadge />}
-        {showEarlyBacker && <EarlyBackerBadge slotsLeft={earlyBackerSlotsLeft(product)} />}
-        {maker?.stripe_onboarding_complete && <RevenueBadge />}
-      </div>
-
-      <h1 className="text-3xl font-bold tracking-tight">{product.name}</h1>
-
-      {/* Maker line */}
-      {maker?.display_name && (
-        <p className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-          <span>{t("makerLabel")}</span>
-          <Link
-            href={`/makers/${maker.id}`}
-            className="font-medium text-foreground hover:underline"
-          >
-            {maker.display_name}
-          </Link>
-          <span aria-hidden>·</span>
-          <Link href={`/makers/${maker.id}`} className="hover:underline text-xs">
-            {t("viewMakerProfile")}
-          </Link>
-        </p>
-      )}
-
-      {/* Price */}
-      <div className="mt-5 flex flex-wrap items-baseline gap-3">
-        <span className="text-3xl font-bold tabular-nums">
-          {formatPrice(product.price_cents, product.currency)}
-        </span>
-        <span className="text-sm text-muted-foreground">
-          {product.billing_type === "subscription" ? tCard("subscription") : tCard("oneTime")}
-        </span>
-        {product.trial_days > 0 && (
-          <span className="text-sm text-muted-foreground">
-            · {t("trialDays", { days: product.trial_days })}
-          </span>
-        )}
-      </div>
-
-      {/* Description */}
-      <div className="mt-8">
-        <p className="whitespace-pre-wrap leading-relaxed text-foreground">
-          {product.description}
-        </p>
-      </div>
-
-      {/* Cheer + Wishlist row */}
-      <div className="mt-8 flex flex-wrap items-center gap-3">
-        <CheerButton
-          productId={id}
-          initialCount={product.cheer_count}
-          initialCheered={userCheered}
-          isLoggedIn={!!user}
-        />
-        <WishlistButton
-          productId={id}
-          initialWishlisted={userWishlisted}
-          isLoggedIn={!!user}
-        />
-      </div>
-
-      {/* Buy */}
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-        <BuyButton
-          productId={id}
-          isLoggedIn={!!user}
-          makerStripeConnected={maker?.stripe_onboarding_complete ?? false}
-        />
-        <Link
-          href="/maker/products/new"
-          className={cn(
-            buttonVariants({ variant: "outline" }),
-            "sm:flex-1 text-center"
+      {/* Two-column layout on desktop */}
+      <div className="grid gap-10 lg:grid-cols-[1fr_340px]">
+        {/* ── Left: content ──────────────────────────────── */}
+        <div className="min-w-0">
+          {/* Badges */}
+          {(product.fair_deal || showEarlyBacker || maker?.stripe_onboarding_complete) && (
+            <div className="mb-4 flex flex-wrap gap-2">
+              {product.fair_deal && <FairDealBadge />}
+              {showEarlyBacker && (
+                <EarlyBackerBadge slotsLeft={earlyBackerSlotsLeft(product)} />
+              )}
+              {maker?.stripe_onboarding_complete && <RevenueBadge />}
+            </div>
           )}
-        >
-          {t("listYours")}
-        </Link>
-      </div>
 
-      {/* Pre-purchase details */}
-      <section className="mt-10 space-y-4 rounded-2xl border bg-muted/20 p-6 text-sm">
-        <h2 className="font-semibold">{t("beforeBuy")}</h2>
-        <div>
-          <dt className="text-muted-foreground">{t("cancelUrl")}</dt>
-          <dd className="mt-1">
-            <a
-              href={product.cancel_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="break-all text-primary underline-offset-4 hover:underline"
-            >
-              {product.cancel_url}
-            </a>
-          </dd>
-        </div>
-        <div>
-          <dt className="text-muted-foreground">{t("refundPolicy")}</dt>
-          <dd className="mt-1 whitespace-pre-wrap">{product.refund_policy}</dd>
-        </div>
-        {product.trial_days > 0 && product.trial_terms && (
-          <div>
-            <dt className="text-muted-foreground">{t("trialTerms")}</dt>
-            <dd className="mt-1 whitespace-pre-wrap">{product.trial_terms}</dd>
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            {product.name}
+          </h1>
+
+          {/* Category + tags */}
+          {(product.category ||
+            (product.problem_tags && product.problem_tags.length > 0)) && (
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {product.category && (
+                <span className="rounded-full border border-border/70 bg-muted/50 px-2.5 py-0.5 text-xs text-muted-foreground">
+                  {product.category}
+                </span>
+              )}
+              {product.problem_tags?.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full bg-primary/8 px-2.5 py-0.5 text-xs text-primary/80"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Maker */}
+          {maker?.display_name && (
+            <p className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+              <span>{t("makerLabel")}</span>
+              <Link
+                href={`/makers/${maker.id}`}
+                className="font-medium text-foreground hover:underline"
+              >
+                {maker.display_name}
+              </Link>
+              <span aria-hidden className="opacity-40">·</span>
+              <Link
+                href={`/makers/${maker.id}`}
+                className="text-xs hover:underline"
+              >
+                {t("viewMakerProfile")}
+              </Link>
+            </p>
+          )}
+
+          {/* Description */}
+          <div className="mt-8 rounded-2xl border bg-muted/10 p-6">
+            <p className="whitespace-pre-wrap leading-loose text-foreground/90">
+              {product.description}
+            </p>
           </div>
-        )}
-      </section>
 
-      {/* Community */}
-      <hr className="my-10 border-border" />
+          {/* Cheer + Wishlist */}
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <CheerButton
+              productId={id}
+              initialCount={product.cheer_count}
+              initialCheered={userCheered}
+              isLoggedIn={!!user}
+            />
+            <WishlistButton
+              productId={id}
+              initialWishlisted={userWishlisted}
+              isLoggedIn={!!user}
+            />
+          </div>
 
-      <CommentSection
-        productId={id}
-        initialComments={comments}
-        currentUserId={user?.id ?? null}
-      />
+          {/* Pre-purchase details */}
+          <section className="mt-10 space-y-5 rounded-2xl border bg-muted/10 p-6 text-sm">
+            <h2 className="font-semibold">{t("beforeBuy")}</h2>
+            <div className="space-y-1">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {t("cancelUrl")}
+              </p>
+              <a
+                href={product.cancel_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="break-all text-primary underline-offset-4 hover:underline"
+              >
+                {product.cancel_url}
+              </a>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {t("refundPolicy")}
+              </p>
+              <p className="whitespace-pre-wrap leading-relaxed">
+                {product.refund_policy}
+              </p>
+            </div>
+            {product.trial_days > 0 && product.trial_terms && (
+              <div className="space-y-1">
+                <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  {t("trialTerms")}
+                </p>
+                <p className="whitespace-pre-wrap leading-relaxed">
+                  {product.trial_terms}
+                </p>
+              </div>
+            )}
+          </section>
 
-      <FeatureRequestSection
-        productId={id}
-        initialRequests={featureRequests}
-        currentUserId={user?.id ?? null}
-      />
+          {/* Community */}
+          <hr className="my-10 border-border/60" />
+          <CommentSection
+            productId={id}
+            initialComments={comments}
+            currentUserId={user?.id ?? null}
+          />
+          <FeatureRequestSection
+            productId={id}
+            initialRequests={featureRequests}
+            currentUserId={user?.id ?? null}
+          />
+        </div>
+
+        {/* ── Right: buy box (sticky) ─────────────────────── */}
+        <aside className="lg:sticky lg:top-20 lg:self-start">
+          <div className="rounded-2xl border bg-card p-6 shadow-sm ring-1 ring-foreground/[0.04]">
+            {/* Price */}
+            <div className="flex flex-wrap items-baseline gap-2">
+              <span className="text-3xl font-bold tabular-nums tracking-tight">
+                {formatPrice(product.price_cents, product.currency)}
+              </span>
+              <span className="text-sm text-muted-foreground">
+                {product.billing_type === "subscription"
+                  ? tCard("subscription")
+                  : tCard("oneTime")}
+              </span>
+            </div>
+            {product.trial_days > 0 && (
+              <p className="mt-1 text-sm text-muted-foreground">
+                {t("trialDays", { days: product.trial_days })}
+              </p>
+            )}
+
+            {/* Buy CTA */}
+            <div className="mt-5 flex flex-col gap-2">
+              <BuyButton
+                productId={id}
+                isLoggedIn={!!user}
+                makerStripeConnected={
+                  maker?.stripe_onboarding_complete ?? false
+                }
+              />
+              <Link
+                href="/maker/products/new"
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "sm" }),
+                  "w-full justify-center text-muted-foreground"
+                )}
+              >
+                {t("listYours")}
+              </Link>
+            </div>
+
+            {/* Fair Deal mini summary */}
+            {product.fair_deal && (
+              <div className="mt-5 flex items-start gap-2 rounded-xl border border-emerald-500/20 bg-emerald-50/50 p-3 text-xs dark:bg-emerald-950/20">
+                <span className="mt-0.5 shrink-0 text-emerald-600">✓</span>
+                <p className="text-emerald-800 dark:text-emerald-300">
+                  {t("fairDealNote")}
+                </p>
+              </div>
+            )}
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }

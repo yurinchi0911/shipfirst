@@ -1,3 +1,5 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 import { Zap } from "lucide-react";
 import { cn } from "@/lib/utils";

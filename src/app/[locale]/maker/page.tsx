@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { Plus } from "lucide-react";
+import { Plus, UserCircle } from "lucide-react";
 import { MakerProductList } from "@/components/maker/maker-product-list";
 import { StripeSetupBanner } from "@/components/maker/stripe-setup-banner";
 import { RevenueCard } from "@/components/maker/revenue-card";
@@ -93,6 +93,7 @@ export default async function MakerPage({
   const posts = (postsRaw ?? []) as MakerPost[];
   const publishedCount = products.filter((p) => p.status === "published").length;
   const draftCount = products.filter((p) => p.status === "draft").length;
+  const totalSales = products.reduce((sum, p) => sum + (p.purchase_count ?? 0), 0);
   const name = profile?.display_name || profile?.email || user.email;
   const showStripeBanner = !stripeOnboardingComplete;
   const showStripeReturnNotice = stripeQuery === "return" || stripeQuery === "refresh";
@@ -103,35 +104,46 @@ export default async function MakerPage({
   const showGraduationBanner =
     graduated || internalCents + externalCents >= GRADUATING_THRESHOLD_CENTS;
 
+  const showFirstSaleCelebration = totalSales >= 1 && internalCents > 0 && !graduated;
+
   return (
-    <span className="block">
-      {/* Header */}
-      <span className="relative overflow-hidden border-b border-border/60 bg-gradient-to-b from-primary/5 via-background to-background">
-        <span
+    <div>
+      {/* Hero / Header */}
+      <div className="relative overflow-hidden border-b border-border/60 bg-gradient-to-b from-primary/5 via-background to-background">
+        <div
           className="pointer-events-none absolute -right-20 -top-20 size-64 rounded-full bg-primary/10 blur-3xl"
           aria-hidden
         />
-        <span className="relative mx-auto flex max-w-5xl flex-col gap-4 px-4 py-10 sm:flex-row sm:items-end sm:justify-between sm:px-6 sm:py-12">
-          <span className="space-y-2">
-            <span className="text-sm font-medium text-primary">{t("title")}</span>
+        <div className="relative mx-auto flex max-w-5xl flex-col gap-4 px-4 py-10 sm:flex-row sm:items-end sm:justify-between sm:px-6 sm:py-12">
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-primary">{t("title")}</p>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
               {t("welcome", { name })}
             </h1>
             <p className="max-w-lg text-muted-foreground">{t("dashboardHint")}</p>
-          </span>
-          {!graduated && (
+          </div>
+          <div className="flex shrink-0 items-center gap-3">
             <Link
-              href="/maker/products/new"
-              className={cn(buttonVariants({ size: "lg" }), "shrink-0 gap-2")}
+              href="/account/profile"
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2")}
             >
-              <Plus className="size-4" aria-hidden />
-              {t("listCta")}
+              <UserCircle className="size-4" aria-hidden />
+              {t("editProfile")}
             </Link>
-          )}
-        </span>
-      </span>
+            {!graduated && (
+              <Link
+                href="/maker/products/new"
+                className={cn(buttonVariants({ size: "sm" }), "gap-2")}
+              >
+                <Plus className="size-4" aria-hidden />
+                {t("listCta")}
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
 
-      <span className="mx-auto block max-w-5xl space-y-8 px-4 py-8 sm:px-6 sm:py-10">
+      <div className="mx-auto max-w-5xl space-y-8 px-4 py-8 sm:px-6 sm:py-10">
         {/* Stripe return notice */}
         {showStripeReturnNotice && stripeOnboardingComplete && (
           <p
@@ -148,6 +160,21 @@ export default async function MakerPage({
           >
             {t("stripeReturnPending")}
           </p>
+        )}
+
+        {/* First Sale 祝福カード */}
+        {showFirstSaleCelebration && (
+          <div className="relative overflow-hidden rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-50 to-teal-50/50 p-6 dark:from-emerald-950/20 dark:to-teal-950/10">
+            <div
+              className="pointer-events-none absolute -right-8 -top-8 size-32 rounded-full bg-emerald-400/20 blur-2xl"
+              aria-hidden
+            />
+            <p className="text-2xl">🎉</p>
+            <h2 className="mt-2 text-lg font-bold tracking-tight">
+              {t("firstSaleTitle")}
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">{t("firstSaleBody")}</p>
+          </div>
         )}
 
         {/* Graduation banner (near or at $1000) */}
@@ -179,9 +206,9 @@ export default async function MakerPage({
 
         {/* Products */}
         <section className="space-y-4">
-          <span className="flex items-center justify-between gap-4">
+          <div className="flex items-center justify-between gap-4">
             <h2 className="text-xl font-semibold">{t("productsTitle")}</h2>
-          </span>
+          </div>
           <MakerProductList products={products} />
         </section>
 
@@ -212,24 +239,24 @@ export default async function MakerPage({
         <section className="rounded-xl border bg-card/50 p-5 text-sm ring-1 ring-foreground/5">
           <h2 className="font-medium">{t("accountTitle")}</h2>
           <dl className="mt-4 grid gap-3 sm:grid-cols-2">
-            <span>
+            <div>
               <dt className="text-muted-foreground">{t("email")}</dt>
               <dd className="font-medium">{profile?.email ?? user.email}</dd>
-            </span>
-            <span>
+            </div>
+            <div>
               <dt className="text-muted-foreground">{t("role")}</dt>
               <dd className="font-medium">{profile?.role ?? "maker"}</dd>
-            </span>
-            <span>
+            </div>
+            <div>
               <dt className="text-muted-foreground">{t("stripe")}</dt>
               <dd className="font-medium">
                 {stripeOnboardingComplete ? t("stripeDone") : t("stripePending")}
               </dd>
-            </span>
+            </div>
           </dl>
         </section>
-      </span>
-    </span>
+      </div>
+    </div>
   );
 }
 
@@ -243,17 +270,17 @@ function StatCard({
   progress?: number;
 }) {
   return (
-    <span className="rounded-xl border bg-card px-4 py-3 ring-1 ring-foreground/5">
+    <div className="rounded-xl border bg-card px-4 py-3 ring-1 ring-foreground/5">
       <span className="block text-2xl font-bold tabular-nums">{value}</span>
       <span className="block text-sm text-muted-foreground">{label}</span>
       {progress !== undefined && (
-        <span className="mt-2 block h-1 w-full overflow-hidden rounded-full bg-muted">
-          <span
-            className="block h-full rounded-full bg-primary"
-            style={{ width: `${progress}%` }}
+        <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-muted">
+          <div
+            className="h-full rounded-full bg-primary transition-all"
+            style={{ width: `${Math.min(100, progress)}%` }}
           />
-        </span>
+        </div>
       )}
-    </span>
+    </div>
   );
 }

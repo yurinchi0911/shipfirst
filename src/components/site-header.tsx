@@ -58,37 +58,46 @@ export async function SiteHeader() {
           <LocaleSwitcher />
           {userEmail ? (
             <>
-              <Link
-                href="/account/purchases"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "sm" }),
-                  "shrink-0"
-                )}
+          <Link
+              href="/account/purchases"
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "sm" }),
+                "shrink-0"
+              )}
+            >
+              <span className="sm:hidden">{t("navPurchasesShort")}</span>
+              <span className="hidden sm:inline">{t("navPurchases")}</span>
+            </Link>
+            <Link
+              href="/account/wishlist"
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "sm" }),
+                "shrink-0"
+              )}
+            >
+              {t("navWishlist")}
+            </Link>
+            <Link
+              href="/maker"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "sm" }),
+                "max-w-[4.5rem] shrink-0 truncate sm:max-w-[120px]"
+              )}
+              title={userEmail}
+            >
+              {t("navMyPage")}
+            </Link>
+            <form action={`/${locale}/auth/signout`} method="post" className="shrink-0">
+              <button
+                type="submit"
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
               >
-                <span className="sm:hidden">{t("navPurchasesShort")}</span>
-                <span className="hidden sm:inline">{t("navPurchases")}</span>
-              </Link>
-              <Link
-                href="/maker"
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "sm" }),
-                  "max-w-[4.5rem] shrink-0 truncate sm:max-w-[120px]"
-                )}
-                title={userEmail}
-              >
-                {t("navMyPage")}
-              </Link>
-              <form action={`/${locale}/auth/signout`} method="post" className="shrink-0">
-                <button
-                  type="submit"
-                  className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
-                >
-                  <span className="sr-only sm:not-sr-only sm:inline">{t("navLogout")}</span>
-                  <span className="sm:hidden" aria-hidden>
-                    ↪
-                  </span>
-                </button>
-              </form>
+                <span className="sr-only sm:not-sr-only sm:inline">{t("navLogout")}</span>
+                <span className="sm:hidden" aria-hidden>
+                  ↪
+                </span>
+              </button>
+            </form>
             </>
           ) : (
             <Link

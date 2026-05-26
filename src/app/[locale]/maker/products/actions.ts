@@ -80,6 +80,18 @@ export async function saveProduct(
   const data = parsed.data;
   const { supabase, user } = await requireMaker(locale);
 
+  // 卒業済みメーカーは新規公開不可
+  if (isPublish) {
+    const { data: makerProfile } = await supabase
+      .from("profiles")
+      .select("graduated_at")
+      .eq("id", user.id)
+      .single();
+    if (makerProfile?.graduated_at) {
+      return { error: tForm("errorGraduated") };
+    }
+  }
+
   const templateId = data.refund_template_id;
   const { policy: refundPolicy, templateId: storedTemplateId } =
     buildRefundPolicy(
@@ -128,6 +140,9 @@ export async function saveProduct(
     };
   }
 
+  const category = formData.get("category")?.toString().trim() || null;
+  const problemTags = formData.getAll("problem_tags").map(String).filter(Boolean).slice(0, 3);
+
   const row = {
     name: data.name.trim(),
     description: data.description.trim(),
@@ -141,6 +156,8 @@ export async function saveProduct(
     refund_policy_template_id: storedTemplateId,
     cancel_policy_ack: cancelPolicyAck,
     delivery_url: deliveryUrl,
+    category,
+    problem_tags: problemTags,
     status,
     fair_deal: isPublish && fairDealResult.ok,
     fair_deal_fail_reasons: fairDealResult.ok ? [] : fairDealMessages,

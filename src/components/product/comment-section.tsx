@@ -6,6 +6,7 @@ import { Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useLocale } from "next-intl";
 import type { Comment } from "@/types/database";
 import { addComment, deleteComment } from "@/app/[locale]/products/[id]/actions";
 
@@ -15,18 +16,20 @@ type Props = {
   currentUserId: string | null;
 };
 
-function formatRelative(dateStr: string) {
+function formatRelative(dateStr: string, locale: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "just now";
-  if (mins < 60) return `${mins}m ago`;
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
+  if (mins < 1) return rtf.format(0, "second");
+  if (mins < 60) return rtf.format(-mins, "minute");
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
-  return `${Math.floor(hours / 24)}d ago`;
+  if (hours < 24) return rtf.format(-hours, "hour");
+  return rtf.format(-Math.floor(hours / 24), "day");
 }
 
 export function CommentSection({ productId, initialComments, currentUserId }: Props) {
   const t = useTranslations("product");
+  const locale = useLocale();
   const [comments, setComments] = useState(initialComments);
   const [body, setBody] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -88,7 +91,7 @@ export function CommentSection({ productId, initialComments, currentUserId }: Pr
                     {c.author?.display_name ?? "Anonymous"}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    {formatRelative(c.created_at)}
+                    {formatRelative(c.created_at, locale)}
                   </span>
                 </span>
                 <p className="mt-1 whitespace-pre-wrap break-words">{c.body}</p>
