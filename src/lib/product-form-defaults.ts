@@ -13,6 +13,7 @@ export const EMPTY_PRODUCT_FORM: ProductFormDefaults = {
   refund_policy_custom: "",
   cancel_policy_ack: false,
   delivery_url: "",
+  lemon_squeezy_url: "",
   category: "",
   problem_tags: [],
 };
@@ -30,6 +31,7 @@ type DbProduct = {
   refund_policy_template_id: number | null;
   cancel_policy_ack: boolean;
   delivery_url: string | null;
+  lemon_squeezy_url?: string | null;
   category?: string | null;
   problem_tags?: string[] | null;
 };
@@ -51,6 +53,7 @@ export function productToFormDefaults(product: DbProduct): ProductFormDefaults {
     refund_policy_custom: templateId === 4 ? product.refund_policy : "",
     cancel_policy_ack: product.cancel_policy_ack,
     delivery_url: product.delivery_url ?? "",
+    lemon_squeezy_url: product.lemon_squeezy_url ?? "",
     category: product.category ?? "",
     problem_tags: product.problem_tags ?? [],
   };

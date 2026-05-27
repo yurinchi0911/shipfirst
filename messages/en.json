@@ -50,6 +50,7 @@
     "filterTag": "Problem",
     "filterPrice": "Max price",
     "filterStripeOnly": "Verified sellers only",
+    "filterLsOnly": "LemonSqueezy only",
     "filterAll": "All",
     "filterClear": "Clear filters",
     "graduatingLabel": "Almost graduated",
@@ -142,6 +143,9 @@
     "graduatingBannerTitle": "Almost there — {remaining} to graduation",
     "graduatingBannerBody": "You're close to the $1,000 cap. New listings may be paused soon.",
     "editProfile": "Edit profile",
+    "lsSetupTitle": "Set up LemonSqueezy to start selling",
+    "lsSetupBody": "Add your LemonSqueezy buy URL to a product to activate the buy button with your affiliate link. Enable an open affiliate program (15%+) on your LemonSqueezy account first.",
+    "lsSetupLink": "Open LemonSqueezy",
     "firstSaleTitle": "You made your first sale! 🚀",
     "firstSaleBody": "Someone believed in what you built. Keep shipping — this is just the beginning.",
     "postTitle": "Share an update",
@@ -159,6 +163,7 @@
     "browseProducts": "Discover products",
     "unknownProduct": "Product",
     "backHome": "Back to home",
+    "week2Hint": "Your purchase history will appear here after buying a product.",
     "makerDashboard": "Maker dashboard",
     "wishlistTitle": "Wishlist",
     "wishlistEmpty": "Your wishlist is empty.",
@@ -186,9 +191,9 @@
     "cancelUrl": "Cancel / unsubscribe",
     "refundPolicy": "Refund policy",
     "trialTerms": "Trial terms",
-    "buy": "Buy now",
+    "buy": "Buy on LemonSqueezy",
     "buyLogin": "Log in to buy",
-    "buyUnavailable": "Payments not available yet",
+    "buyUnavailable": "Not available yet",
     "listYours": "List your own",
     "cheerLabel": "Cheer",
     "cheerDone": "Cheered!",
@@ -243,7 +248,9 @@
     "earlyBackerTip": "Launch window — support the maker's first sales",
     "slotsLeft": "· {n} spots left",
     "revenue": "Verified seller",
-    "revenueTip": "This maker has Stripe connected and receives payouts directly"
+    "revenueTip": "This maker has Stripe connected and receives payouts directly",
+    "ls": "Selling on LemonSqueezy",
+    "lsTip": "Sold via LemonSqueezy. 15% automatically goes to ShipFirst as an affiliate commission."
   },
   "form": {
     "errorCheck": "Please check your input",
@@ -278,6 +285,9 @@
     "refundCustom": "Full refund policy *",
     "refundCustomPlaceholder": "100+ characters",
     "subAck": "I state that users can cancel their subscription at any time *",
+    "lsUrlLabel": "🍋 LemonSqueezy buy URL *",
+    "lsUrlHint": "Your LemonSqueezy product page URL. ShipFirst automatically appends its affiliate code to this URL for the buy button.",
+    "lsUrlSetup": "Set! The buy button will use your LemonSqueezy affiliate link.",
     "sectionDiscovery": "Discovery",
     "categoryLabel": "Category",
     "categoryPlaceholder": "Select a category",
@@ -325,6 +335,7 @@
     "ackRequired": "This checkbox is required",
     "refundCustomMin": "Custom refund policy must be at least 100 characters",
     "supplementMin": "If you add extra terms, use at least 30 characters",
-    "nameRequired": "Enter a product name"
+    "nameRequired": "Enter a product name",
+    "lsUrlRequired": "Enter your LemonSqueezy buy URL"
   }
 }

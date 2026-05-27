@@ -3,13 +3,11 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Plus, UserCircle } from "lucide-react";
 import { MakerProductList } from "@/components/maker/maker-product-list";
-import { StripeSetupBanner } from "@/components/maker/stripe-setup-banner";
 import { RevenueCard } from "@/components/maker/revenue-card";
 import { GraduationBanner } from "@/components/maker/graduation-banner";
 import { MakerPostForm } from "@/components/maker/maker-post-form";
 import { createClient } from "@/lib/supabase/server";
-import { isStripeConfigured, isSupabaseConfigured } from "@/lib/env";
-import { syncProfileOnboardingByAccountId } from "@/lib/stripe/connect";
+import { isSupabaseConfigured } from "@/lib/env";
 import { graduationProgress } from "@/lib/graduation";
 import { GRADUATING_THRESHOLD_CENTS } from "@/lib/products";
 import type { MakerProductItem } from "@/lib/products";
@@ -30,13 +28,10 @@ export async function generateMetadata({
 
 export default async function MakerPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ stripe?: string }>;
 }) {
   const { locale } = await params;
-  const { stripe: stripeQuery } = await searchParams;
   const loc = locale as Locale;
   const t = await getTranslations("maker");
 
@@ -56,27 +51,15 @@ export default async function MakerPage({
   const { data: profile } = await supabase
     .from("profiles")
     .select(
-      "email, display_name, role, stripe_account_id, stripe_onboarding_complete, total_internal_revenue_cents, total_external_revenue_cents, graduated_at"
+      "email, display_name, role, total_internal_revenue_cents, total_external_revenue_cents, graduated_at"
     )
     .eq("id", user.id)
     .single();
 
-  let stripeOnboardingComplete = profile?.stripe_onboarding_complete ?? false;
-
-  if (isStripeConfigured() && profile?.stripe_account_id && !stripeOnboardingComplete) {
-    try {
-      stripeOnboardingComplete = await syncProfileOnboardingByAccountId(
-        profile.stripe_account_id
-      );
-    } catch {
-      // Stripe / admin 未設定時は表示のみ継続
-    }
-  }
-
   const { data: productsRaw } = await supabase
     .from("products")
     .select(
-      "id, name, description, price_cents, currency, billing_type, fair_deal, status, published_at, purchase_count, updated_at"
+      "id, name, description, price_cents, currency, billing_type, fair_deal, status, published_at, purchase_count, updated_at, lemon_squeezy_url"
     )
     .eq("maker_id", user.id)
     .in("status", ["draft", "published"])
@@ -95,8 +78,6 @@ export default async function MakerPage({
   const draftCount = products.filter((p) => p.status === "draft").length;
   const totalSales = products.reduce((sum, p) => sum + (p.purchase_count ?? 0), 0);
   const name = profile?.display_name || profile?.email || user.email;
-  const showStripeBanner = !stripeOnboardingComplete;
-  const showStripeReturnNotice = stripeQuery === "return" || stripeQuery === "refresh";
 
   const internalCents = profile?.total_internal_revenue_cents ?? 0;
   const externalCents = profile?.total_external_revenue_cents ?? 0;
@@ -105,6 +86,12 @@ export default async function MakerPage({
     graduated || internalCents + externalCents >= GRADUATING_THRESHOLD_CENTS;
 
   const showFirstSaleCelebration = totalSales >= 1 && internalCents > 0 && !graduated;
+
+  // LemonSqueezy設定済みプロダクトの有無
+  const hasLsProduct = products.some(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (p) => !!(p as any).lemon_squeezy_url
+  );
 
   return (
     <div>
@@ -144,24 +131,6 @@ export default async function MakerPage({
       </div>
 
       <div className="mx-auto max-w-5xl space-y-8 px-4 py-8 sm:px-6 sm:py-10">
-        {/* Stripe return notice */}
-        {showStripeReturnNotice && stripeOnboardingComplete && (
-          <p
-            role="status"
-            className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-100"
-          >
-            {t("stripeReturnSuccess")}
-          </p>
-        )}
-        {showStripeReturnNotice && !stripeOnboardingComplete && (
-          <p
-            role="status"
-            className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm"
-          >
-            {t("stripeReturnPending")}
-          </p>
-        )}
-
         {/* First Sale 祝福カード */}
         {showFirstSaleCelebration && (
           <div className="relative overflow-hidden rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-50 to-teal-50/50 p-6 dark:from-emerald-950/20 dark:to-teal-950/10">
@@ -186,8 +155,26 @@ export default async function MakerPage({
           />
         )}
 
-        {/* Stripe setup */}
-        {showStripeBanner && !graduated && <StripeSetupBanner />}
+        {/* LemonSqueezy セットアップ案内 */}
+        {!hasLsProduct && !graduated && (
+          <div className="rounded-xl border border-yellow-300/60 bg-yellow-50/60 p-4 dark:border-yellow-700/40 dark:bg-yellow-900/10">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl" aria-hidden>🍋</span>
+              <div>
+                <p className="text-sm font-semibold">{t("lsSetupTitle")}</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">{t("lsSetupBody")}</p>
+                <a
+                  href="https://app.lemonsqueezy.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-block text-xs font-medium text-yellow-700 underline-offset-4 hover:underline dark:text-yellow-400"
+                >
+                  {t("lsSetupLink")} →
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Stats grid */}
         <div className="grid gap-3 sm:grid-cols-4">
@@ -246,12 +233,6 @@ export default async function MakerPage({
             <div>
               <dt className="text-muted-foreground">{t("role")}</dt>
               <dd className="font-medium">{profile?.role ?? "maker"}</dd>
-            </div>
-            <div>
-              <dt className="text-muted-foreground">{t("stripe")}</dt>
-              <dd className="font-medium">
-                {stripeOnboardingComplete ? t("stripeDone") : t("stripePending")}
-              </dd>
             </div>
           </dl>
         </section>

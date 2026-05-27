@@ -1,72 +1,34 @@
 "use client";
 
-import { useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 
 type Props = {
-  productId: string;
-  isLoggedIn: boolean;
-  makerStripeConnected: boolean;
+  lemonSqueezyUrl: string | null;
 };
 
-export function BuyButton({ productId, isLoggedIn, makerStripeConnected }: Props) {
+export function BuyButton({ lemonSqueezyUrl }: Props) {
   const t = useTranslations("product");
-  const locale = useLocale();
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  if (!isLoggedIn) {
+  if (!lemonSqueezyUrl) {
     return (
-      <Button
-        className="sm:flex-1"
-        onClick={() =>
-          router.push(`/login?next=/products/${productId}`)
-        }
-      >
-        {t("buyLogin")}
-      </Button>
-    );
-  }
-
-  if (!makerStripeConnected) {
-    return (
-      <Button disabled className="sm:flex-1">
+      <Button disabled className="w-full">
         {t("buyUnavailable")}
       </Button>
     );
   }
 
-  async function handleBuy() {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product_id: productId, locale }),
-      });
-      const data = (await res.json()) as { url?: string; error?: string };
-      if (!res.ok || !data.url) throw new Error(data.error ?? "Checkout failed");
-      window.location.href = data.url;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error");
-      setLoading(false);
-    }
-  }
-
   return (
-    <span className="flex flex-1 flex-col gap-1">
-      <Button onClick={handleBuy} disabled={loading} className="w-full">
-        {loading ? "…" : t("buy")}
+    <a
+      href={lemonSqueezyUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-full"
+    >
+      <Button className="w-full gap-2">
+        <span>🍋</span>
+        {t("buy")}
       </Button>
-      {error && (
-        <p className="text-xs text-destructive" role="alert">
-          {error}
-        </p>
-      )}
-    </span>
+    </a>
   );
 }

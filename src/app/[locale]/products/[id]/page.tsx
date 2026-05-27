@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { isSupabaseConfigured } from "@/lib/env";
+import { isSupabaseConfigured, buildLsAffiliateUrl } from "@/lib/env";
 import {
   earlyBackerSlotsLeft,
   formatPrice,
@@ -11,7 +11,7 @@ import {
 } from "@/lib/products";
 import { FairDealBadge } from "@/components/badges/fair-deal-badge";
 import { EarlyBackerBadge } from "@/components/badges/early-backer-badge";
-import { RevenueBadge } from "@/components/badges/revenue-badge";
+import { LsBadge } from "@/components/badges/ls-badge";
 import { BuyButton } from "@/components/product/buy-button";
 import { CheerButton } from "@/components/product/cheer-button";
 import { WishlistButton } from "@/components/product/wishlist-button";
@@ -29,8 +29,9 @@ async function getProduct(id: string): Promise<ProductDetail | null> {
       `id, name, description, price_cents, currency, billing_type, fair_deal,
        published_at, early_backer_ends_at, early_backer_purchase_cap, purchase_count,
        cancel_url, refund_policy, trial_days, trial_terms, delivery_url,
+       lemon_squeezy_url,
        category, problem_tags, cheer_count, maker_id,
-       maker:profiles!maker_id (id, display_name, stripe_onboarding_complete, stripe_account_id)`
+       maker:profiles!maker_id (id, display_name)`
     )
     .eq("id", id)
     .eq("status", "published")
@@ -140,6 +141,9 @@ export default async function ProductDetailPage({
 
   const showEarlyBacker = isEarlyBackerActive(product);
   const maker = Array.isArray(product.maker) ? product.maker[0] : product.maker;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rawLsUrl = (product as any).lemon_squeezy_url as string | null ?? null;
+  const affiliateUrl = rawLsUrl ? buildLsAffiliateUrl(rawLsUrl) : null;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
@@ -159,13 +163,13 @@ export default async function ProductDetailPage({
         {/* ── Left: content ──────────────────────────────── */}
         <div className="min-w-0">
           {/* Badges */}
-          {(product.fair_deal || showEarlyBacker || maker?.stripe_onboarding_complete) && (
+          {(product.fair_deal || showEarlyBacker || rawLsUrl) && (
             <div className="mb-4 flex flex-wrap gap-2">
               {product.fair_deal && <FairDealBadge />}
               {showEarlyBacker && (
                 <EarlyBackerBadge slotsLeft={earlyBackerSlotsLeft(product)} />
               )}
-              {maker?.stripe_onboarding_complete && <RevenueBadge />}
+              {rawLsUrl && <LsBadge />}
             </div>
           )}
 
@@ -307,13 +311,7 @@ export default async function ProductDetailPage({
 
             {/* Buy CTA */}
             <div className="mt-5 flex flex-col gap-2">
-              <BuyButton
-                productId={id}
-                isLoggedIn={!!user}
-                makerStripeConnected={
-                  maker?.stripe_onboarding_complete ?? false
-                }
-              />
+              <BuyButton lemonSqueezyUrl={affiliateUrl} />
               <Link
                 href="/maker/products/new"
                 className={cn(

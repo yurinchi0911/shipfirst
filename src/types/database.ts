@@ -5,8 +5,6 @@ export type Profile = {
   bio: string | null;
   sns_links: Record<string, string>;
   role: "maker" | "buyer" | "admin";
-  stripe_account_id: string | null;
-  stripe_onboarding_complete: boolean;
   total_internal_revenue_cents: number;
   total_external_revenue_cents: number;
   graduated_at: string | null;
@@ -20,7 +18,6 @@ export type PublicProfile = Pick<
   | "display_name"
   | "bio"
   | "sns_links"
-  | "stripe_onboarding_complete"
   | "total_internal_revenue_cents"
   | "total_external_revenue_cents"
   | "graduated_at"

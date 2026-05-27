@@ -22,7 +22,7 @@ type PageProps = {
     category?: string;
     tag?: string;
     max_price?: string;
-    stripe_only?: string;
+    ls_only?: string;
   }>;
 };
 
@@ -31,7 +31,7 @@ async function getProducts(params: {
   category?: string;
   tag?: string;
   maxPriceCents?: number;
-  stripeOnly?: boolean;
+  lsOnly?: boolean;
 }): Promise<ProductListItem[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -54,8 +54,11 @@ async function getProducts(params: {
   if (params.maxPriceCents) {
     products = products.filter((p) => p.price_cents <= params.maxPriceCents!);
   }
-  if (params.stripeOnly) {
-    products = products.filter((p) => p.maker?.stripe_onboarding_complete);
+  if (params.lsOnly) {
+    products = products.filter(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (p) => !!(p as any).lemon_squeezy_url
+    );
   }
 
   switch (params.tab) {
@@ -105,7 +108,7 @@ export default async function HomePage({ params, searchParams }: PageProps) {
         category: sp.category,
         tag: sp.tag,
         maxPriceCents,
-        stripeOnly: sp.stripe_only === "1",
+        lsOnly: sp.ls_only === "1",
       })
     : [];
 

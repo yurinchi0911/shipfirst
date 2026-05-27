@@ -5,7 +5,7 @@ import { isSupabaseConfigured } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 import { PRODUCT_LIST_SELECT, type ProductListItem } from "@/lib/products";
 import { ProductCard } from "@/components/product-card";
-import { RevenueBadge } from "@/components/badges/revenue-badge";
+import { LsBadge } from "@/components/badges/ls-badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { MakerPost } from "@/types/database";
@@ -46,7 +46,7 @@ export default async function MakerProfilePage({
   const { data: profile } = await supabase
     .from("profiles")
     .select(
-      "id, display_name, bio, sns_links, stripe_onboarding_complete, created_at"
+      "id, display_name, bio, sns_links, created_at"
     )
     .eq("id", id)
     .maybeSingle();
@@ -90,7 +90,10 @@ export default async function MakerProfilePage({
         <span className="flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-2xl font-bold tracking-tight">{name}</h1>
-            {profile.stripe_onboarding_complete && <RevenueBadge />}
+            {products.some(
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (p) => !!(p as any).lemon_squeezy_url
+            ) && <LsBadge />}
           </div>
           {profile.bio && (
             <p className="mt-2 text-muted-foreground">{profile.bio}</p>

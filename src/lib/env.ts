@@ -17,14 +17,20 @@ export function getAppUrl(): string {
   );
 }
 
-export function isStripeConfigured(): boolean {
-  const secret = process.env.STRIPE_SECRET_KEY?.trim();
-  const publishable = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?.trim();
-  return Boolean(secret?.startsWith("sk_") && publishable?.startsWith("pk_"));
+/** ShipFirst の LemonSqueezy アフィリエイトコード */
+export function getLsAffiliateCode(): string {
+  return process.env.NEXT_PUBLIC_LS_AFFILIATE_CODE?.trim() ?? "";
 }
 
-export function getPlatformFeePercent(): number {
-  const raw = process.env.PLATFORM_FEE_PERCENT?.trim();
-  const n = raw ? Number.parseInt(raw, 10) : 15;
-  return Number.isFinite(n) && n >= 0 && n <= 100 ? n : 15;
+/** LemonSqueezy URL にアフィリエイトコードを付与する */
+export function buildLsAffiliateUrl(productUrl: string): string {
+  const code = getLsAffiliateCode();
+  if (!code || !productUrl) return productUrl;
+  try {
+    const url = new URL(productUrl);
+    url.searchParams.set("aff", code);
+    return url.toString();
+  } catch {
+    return productUrl;
+  }
 }

@@ -19,8 +19,8 @@ export function ProductDiscoveryFilters() {
   const category = searchParams.get("category") ?? "";
   const tag = searchParams.get("tag") ?? "";
   const maxPrice = searchParams.get("max_price") ?? "";
-  const stripeOnly = searchParams.get("stripe_only") === "1";
-  const hasFilters = category || tag || maxPrice || stripeOnly;
+  const lsOnly = searchParams.get("ls_only") === "1";
+  const hasFilters = category || tag || maxPrice || lsOnly;
 
   const update = useCallback(
     (key: string, value: string | null) => {
@@ -86,15 +86,15 @@ export function ProductDiscoveryFilters() {
         className="h-8 w-28 rounded-lg border border-input bg-background px-2.5 text-sm"
       />
 
-      {/* Stripe only toggle */}
+      {/* LemonSqueezy only toggle */}
       <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-input bg-background px-3 h-8 select-none">
         <input
           type="checkbox"
-          checked={stripeOnly}
-          onChange={(e) => update("stripe_only", e.target.checked ? "1" : null)}
+          checked={lsOnly}
+          onChange={(e) => update("ls_only", e.target.checked ? "1" : null)}
           className="size-3.5"
         />
-        <span className="text-xs">{t("filterStripeOnly")}</span>
+        <span className="text-xs">🍋 {t("filterLsOnly")}</span>
       </label>
 
       {/* Clear */}

@@ -50,6 +50,7 @@
     "filterTag": "解決する課題",
     "filterPrice": "最高価格",
     "filterStripeOnly": "収益バッジ済みのみ",
+    "filterLsOnly": "LemonSqueezy 販売中のみ",
     "filterAll": "すべて",
     "filterClear": "フィルターを解除",
     "graduatingLabel": "もうすぐ卒業",
@@ -142,6 +143,9 @@
     "graduatingBannerTitle": "卒業まであと {remaining}",
     "graduatingBannerBody": "$1,000に近づいています。もうすぐ新規掲載が停止されます。",
     "editProfile": "プロフィール編集",
+    "lsSetupTitle": "LemonSqueezy を設定して販売を始めましょう",
+    "lsSetupBody": "プロダクトに LemonSqueezy の購入URLを追加すると、アフィリエイトリンク経由で購入ボタンが有効になります。LemonSqueezy側でオープンアフィリエイトプログラム（15%以上）を有効にしてください。",
+    "lsSetupLink": "LemonSqueezy を開く",
     "firstSaleTitle": "初めての販売、おめでとう！🚀",
     "firstSaleBody": "あなたのプロダクトを信じて買ってくれた人がいます。これはまだ始まりです。作り続けましょう。",
     "postTitle": "近況をシェア",
@@ -159,6 +163,7 @@
     "browseProducts": "プロダクトを探す",
     "unknownProduct": "プロダクト",
     "backHome": "トップへ戻る",
+    "week2Hint": "購入後はここに履歴が表示されます。",
     "makerDashboard": "メーカーダッシュボード",
     "wishlistTitle": "ウィッシュリスト",
     "wishlistEmpty": "ウィッシュリストは空です。",
@@ -186,7 +191,7 @@
     "cancelUrl": "退会・キャンセル",
     "refundPolicy": "返金ポリシー",
     "trialTerms": "トライアル条件",
-    "buy": "購入する",
+    "buy": "LemonSqueezy で購入する",
     "buyLogin": "ログインして購入",
     "buyUnavailable": "現在購入できません",
     "listYours": "自分も掲載する",
@@ -243,7 +248,9 @@
     "earlyBackerTip": "ローンチ直後のプロダクト。最初の購入者として応援できます",
     "slotsLeft": "· 残り{n}枠",
     "revenue": "収益可視化済み",
-    "revenueTip": "このメーカーはStripe Connectで連携済み。売上は直接振り込まれます"
+    "revenueTip": "このメーカーはStripe Connectで連携済み。売上は直接振り込まれます",
+    "ls": "LemonSqueezy 販売中",
+    "lsTip": "LemonSqueezyでの購入。15%がShipFirstのアフィリエイト報酬として自動分配されます"
   },
   "form": {
     "errorCheck": "入力内容を確認してください",
@@ -278,6 +285,9 @@
     "refundCustom": "返金ポリシー全文 *",
     "refundCustomPlaceholder": "100文字以上で記載",
     "subAck": "ユーザーはいつでもサブスクリプションをキャンセルできることを明記します *",
+    "lsUrlLabel": "🍋 LemonSqueezy 購入URL *",
+    "lsUrlHint": "LemonSqueezy の商品ページURL。ShipFirst が自動的にアフィリエイトコードを付与して購入ボタンに使用します。",
+    "lsUrlSetup": "設定済み！購入ボタンに LemonSqueezy のアフィリエイトリンクが使用されます。",
     "sectionDiscovery": "掲載カテゴリ・課題タグ",
     "categoryLabel": "カテゴリ",
     "categoryPlaceholder": "カテゴリを選択",
@@ -325,6 +335,7 @@
     "ackRequired": "チェックが必要です",
     "refundCustomMin": "カスタム返金ポリシーは100文字以上",
     "supplementMin": "追記する場合は30文字以上",
-    "nameRequired": "プロダクト名を入力してください"
+    "nameRequired": "プロダクト名を入力してください",
+    "lsUrlRequired": "LemonSqueezy の購入URLを入力してください"
   }
 }

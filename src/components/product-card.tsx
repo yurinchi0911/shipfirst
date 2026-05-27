@@ -12,13 +12,14 @@ import {
 } from "@/lib/products";
 import { FairDealBadge } from "@/components/badges/fair-deal-badge";
 import { EarlyBackerBadge } from "@/components/badges/early-backer-badge";
-import { RevenueBadge } from "@/components/badges/revenue-badge";
+import { LsBadge } from "@/components/badges/ls-badge";
 import { GraduatingBadge } from "@/components/badges/graduating-badge";
 
 export function ProductCard({ product }: { product: ProductListItem }) {
   const t = useTranslations("card");
   const showEarlyBacker = isEarlyBackerActive(product);
-  const makerConnected = product.maker?.stripe_onboarding_complete ?? false;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const hasLs = !!(product as any).lemon_squeezy_url;
   const graduating = isGraduating(product);
 
   return (
@@ -27,11 +28,11 @@ export function ProductCard({ product }: { product: ProductListItem }) {
       className="group flex flex-col rounded-2xl border border-border/80 bg-card p-5 transition-all duration-200 hover:border-border hover:shadow-lg hover:shadow-black/[0.06] hover:-translate-y-0.5 active:translate-y-0 active:shadow-md"
     >
       {/* Badges */}
-      {(product.fair_deal || showEarlyBacker || makerConnected || graduating) && (
+      {(product.fair_deal || showEarlyBacker || hasLs || graduating) && (
         <div className="mb-3 flex flex-wrap gap-1.5">
           {product.fair_deal && <FairDealBadge />}
           {showEarlyBacker && <EarlyBackerBadge slotsLeft={earlyBackerSlotsLeft(product)} />}
-          {makerConnected && <RevenueBadge />}
+          {hasLs && <LsBadge />}
           {graduating && <GraduatingBadge />}
         </div>
       )}

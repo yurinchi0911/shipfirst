@@ -28,6 +28,7 @@ export type ProductFormDefaults = {
   refund_policy_custom: string;
   cancel_policy_ack: boolean;
   delivery_url: string;
+  lemon_squeezy_url: string;
   category: string;
   problem_tags: string[];
 };
@@ -77,6 +78,7 @@ export function ProductForm({
   );
   const [trialTerms, setTrialTerms] = useState(defaults.trial_terms);
   const [cancelPolicyAck, setCancelPolicyAck] = useState(defaults.cancel_policy_ack);
+  const [lemonSqueezyUrl, setLemonSqueezyUrl] = useState(defaults.lemon_squeezy_url);
   const [category, setCategory] = useState(defaults.category);
   const [problemTags, setProblemTags] = useState<string[]>(defaults.problem_tags);
 
@@ -208,6 +210,33 @@ export function ProductForm({
             placeholder={t("deliveryPlaceholder")}
           />
           <FieldError errors={fieldErrors.delivery_url} />
+        </div>
+
+        {/* LemonSqueezy 購入リンク */}
+        <div className="rounded-xl border border-yellow-200 bg-yellow-50/60 p-4 space-y-3 dark:border-yellow-800/40 dark:bg-yellow-900/10">
+          <div className="flex items-start gap-2">
+            <span className="text-lg">🍋</span>
+            <div>
+              <h3 className="text-sm font-semibold">{t("lsUrlLabel")}</h3>
+              <p className="mt-0.5 text-xs text-muted-foreground">{t("lsUrlHint")}</p>
+            </div>
+          </div>
+          <Input
+            id="lemon_squeezy_url"
+            name="lemon_squeezy_url"
+            type="url"
+            required
+            value={lemonSqueezyUrl}
+            onChange={(e) => setLemonSqueezyUrl(e.target.value)}
+            placeholder="https://your-store.lemonsqueezy.com/buy/..."
+            className="bg-white dark:bg-background"
+          />
+          <FieldError errors={fieldErrors.lemon_squeezy_url} />
+          {lemonSqueezyUrl && (
+            <p className="text-xs text-muted-foreground">
+              {t("lsUrlSetup")}
+            </p>
+          )}
         </div>
       </section>
 

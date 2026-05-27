@@ -32,7 +32,6 @@ export type ProductListItem = {
   maker_id: string;
   maker: {
     display_name: string | null;
-    stripe_onboarding_complete: boolean;
     total_internal_revenue_cents: number;
     total_external_revenue_cents: number;
     graduated_at: string | null;
@@ -45,11 +44,10 @@ export type ProductDetail = Omit<ProductListItem, "maker"> & {
   trial_days: number;
   trial_terms: string | null;
   delivery_url: string | null;
+  lemon_squeezy_url: string | null;
   maker: {
     id: string;
     display_name: string | null;
-    stripe_onboarding_complete: boolean;
-    stripe_account_id: string | null;
   } | null;
 };
 
@@ -136,7 +134,7 @@ export const PRODUCT_LIST_SELECT = `
   fair_deal, published_at, early_backer_ends_at, early_backer_purchase_cap,
   purchase_count, category, problem_tags, cheer_count, maker_id,
   maker:profiles!maker_id (
-    display_name, stripe_onboarding_complete,
+    display_name,
     total_internal_revenue_cents, total_external_revenue_cents, graduated_at
   )
 ` as const;

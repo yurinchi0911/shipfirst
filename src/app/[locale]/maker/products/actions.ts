@@ -109,6 +109,7 @@ export async function saveProduct(
   const trialTerms =
     data.trial_days > 0 ? (data.trial_terms ?? "").trim() : null;
   const deliveryUrl = data.delivery_url?.trim() || null;
+  const lemonSqueezyUrl = data.lemon_squeezy_url?.trim() || null;
 
   const status = isPublish ? "published" : "draft";
   const now = new Date().toISOString();
@@ -156,6 +157,7 @@ export async function saveProduct(
     refund_policy_template_id: storedTemplateId,
     cancel_policy_ack: cancelPolicyAck,
     delivery_url: deliveryUrl,
+    lemon_squeezy_url: lemonSqueezyUrl,
     category,
     problem_tags: problemTags,
     status,

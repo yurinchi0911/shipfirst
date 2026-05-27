@@ -12,6 +12,15 @@ const optionalUrl = (v: ValidationMessages) =>
       message: v.urlInvalid,
     });
 
+const lsUrl = (v: ValidationMessages) =>
+  z
+    .string()
+    .optional()
+    .transform((s) => (s ?? "").trim())
+    .refine((s) => s === "" || z.string().url().safeParse(s).success, {
+      message: v.urlInvalid,
+    });
+
 export function createProductDraftSchema(v: ValidationMessages) {
   return z.object({
     name: z.string().min(1, v.nameRequired),
@@ -28,6 +37,7 @@ export function createProductDraftSchema(v: ValidationMessages) {
       .union([z.literal("on"), z.literal("true"), z.undefined()])
       .optional(),
     delivery_url: optionalUrl(v),
+    lemon_squeezy_url: lsUrl(v),
   });
 }
 
@@ -56,6 +66,10 @@ export function createProductFormSchema(v: ValidationMessages) {
         .union([z.literal("on"), z.literal("true"), z.undefined()])
         .optional(),
       delivery_url: optionalUrl(v),
+      lemon_squeezy_url: z
+        .string()
+        .min(1, v.lsUrlRequired)
+        .url(v.urlInvalid),
     })
     .superRefine((data, ctx) => {
       if (data.trial_days > 0) {
@@ -113,6 +127,7 @@ function rawFromForm(formData: FormData) {
     refund_policy_custom: formData.get("refund_policy_custom") ?? "",
     cancel_policy_ack: formData.get("cancel_policy_ack") ?? undefined,
     delivery_url: formData.get("delivery_url") ?? "",
+    lemon_squeezy_url: formData.get("lemon_squeezy_url") ?? "",
   };
 }
 
