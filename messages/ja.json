@@ -49,12 +49,23 @@
     "filterCategory": "カテゴリ",
     "filterTag": "解決する課題",
     "filterPrice": "最高価格",
+    "searchPlaceholder": "プロダクト名・キーワードで検索…",
     "filterStripeOnly": "収益バッジ済みのみ",
     "filterLsOnly": "LemonSqueezy 販売中のみ",
     "filterAll": "すべて",
     "filterClear": "フィルターを解除",
     "graduatingLabel": "もうすぐ卒業",
-    "graduatingTip": "このメーカーは$700以上を稼いでおり、卒業（$1,000）に近づいています。"
+    "graduatingTip": "このメーカーは$700以上を稼いでおり、卒業（$1,000）に近づいています。",
+    "howTitle": "3ステップで最初の販売へ",
+    "howStep1Title": "プロダクトを掲載する（無料）",
+    "howStep1Body": "LemonSqueezy でプロダクトを作成し、ShipFirst に登録するだけ。掲載費用は一切かかりません。",
+    "howStep2Title": "バイヤーに発見される",
+    "howStep2Body": "カテゴリ・課題タグ・新着タブで、あなたのプロダクトを必要としているバイヤーに届きます。",
+    "howStep3Title": "売れたら収益が自動分配",
+    "howStep3Body": "購入ボタン経由で LemonSqueezy が決済を処理。85% はあなたへ、15% は ShipFirst へ自動で振り分けられます。",
+    "statProducts": "掲載プロダクト",
+    "statSales": "累計販売数",
+    "statMakers": "登録メーカー"
   },
   "categories": {
     "saas": "SaaS / Webアプリ",
@@ -212,7 +223,10 @@
     "featureRequestLoginPrompt": "ログインして機能をリクエスト",
     "makerLabel": "By",
     "viewMakerProfile": "メーカープロフィールを見る",
-    "fairDealNote": "キャンセル・返金ポリシーを事前に明示しています。購入後の驚きはありません。"
+    "fairDealNote": "キャンセル・返金ポリシーを事前に明示しています。購入後の驚きはありません。",
+    "share": "シェア:",
+    "shareCopy": "リンクをコピー",
+    "shareCopied": "コピーしました！"
   },
   "profileEdit": {
     "title": "プロフィール編集",

@@ -23,6 +23,7 @@ type PageProps = {
     tag?: string;
     max_price?: string;
     ls_only?: string;
+    q?: string;
   }>;
 };
 
@@ -32,6 +33,7 @@ async function getProducts(params: {
   tag?: string;
   maxPriceCents?: number;
   lsOnly?: boolean;
+  query?: string;
 }): Promise<ProductListItem[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -58,6 +60,15 @@ async function getProducts(params: {
     products = products.filter(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (p) => !!(p as any).lemon_squeezy_url
+    );
+  }
+  if (params.query) {
+    const q = params.query.toLowerCase();
+    products = products.filter(
+      (p) =>
+        p.name.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.problem_tags?.some((t) => t.toLowerCase().includes(q))
     );
   }
 
@@ -109,6 +120,7 @@ export default async function HomePage({ params, searchParams }: PageProps) {
         tag: sp.tag,
         maxPriceCents,
         lsOnly: sp.ls_only === "1",
+        query: sp.q?.trim() || undefined,
       })
     : [];
 
@@ -201,6 +213,46 @@ export default async function HomePage({ params, searchParams }: PageProps) {
           </div>
         </div>
       </section>
+
+      {/* ─── How it works ──────────────────────────────────────────── */}
+      <section className="border-b border-border/50 bg-muted/20">
+        <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-16">
+          <h2 className="mb-10 text-center text-xl font-bold tracking-tight sm:text-2xl">
+            {t("howTitle")}
+          </h2>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {([1, 2, 3] as const).map((n) => (
+              <div key={n} className="flex flex-col items-start gap-3 rounded-2xl border bg-card p-6">
+                <span className="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-sm font-bold text-primary">
+                  {n}
+                </span>
+                <h3 className="text-sm font-semibold">{t(`howStep${n}Title`)}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{t(`howStep${n}Body`)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Stats ─────────────────────────────────────────────────── */}
+      {products.length > 0 && (
+        <section className="border-b border-border/50">
+          <div className="mx-auto grid max-w-5xl grid-cols-3 divide-x divide-border/50 px-4 sm:px-6">
+            {[
+              { value: products.length, label: t("statProducts") },
+              { value: products.reduce((s, p) => s + (p.purchase_count ?? 0), 0), label: t("statSales") },
+              { value: [...new Set(products.map((p) => p.maker_id))].length, label: t("statMakers") },
+            ].map(({ value, label }) => (
+              <div key={label} className="flex flex-col items-center py-8 text-center">
+                <span className="text-3xl font-bold tabular-nums tracking-tight sm:text-4xl">
+                  {value}
+                </span>
+                <span className="mt-1 text-xs text-muted-foreground">{label}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ─── Discovery ─────────────────────────────────────────────── */}
       <section

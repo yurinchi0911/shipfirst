@@ -49,12 +49,23 @@
     "filterCategory": "Category",
     "filterTag": "Problem",
     "filterPrice": "Max price",
+    "searchPlaceholder": "Search by name or keyword…",
     "filterStripeOnly": "Verified sellers only",
     "filterLsOnly": "LemonSqueezy only",
     "filterAll": "All",
     "filterClear": "Clear filters",
     "graduatingLabel": "Almost graduated",
-    "graduatingTip": "This maker has earned $700+ and is approaching the $1,000 graduation cap."
+    "graduatingTip": "This maker has earned $700+ and is approaching the $1,000 graduation cap.",
+    "howTitle": "3 steps to your first sale",
+    "howStep1Title": "List your product — free",
+    "howStep1Body": "Create your product on LemonSqueezy, then list it on ShipFirst. No listing fees, ever.",
+    "howStep2Title": "Get discovered",
+    "howStep2Body": "Buyers find you through category filters, problem tags, and the new arrivals feed.",
+    "howStep3Title": "Revenue splits automatically",
+    "howStep3Body": "LemonSqueezy handles payments. 85% goes to you, 15% to ShipFirst — no manual invoicing.",
+    "statProducts": "products listed",
+    "statSales": "total sales",
+    "statMakers": "makers"
   },
   "categories": {
     "saas": "SaaS / Web app",
@@ -212,7 +223,10 @@
     "featureRequestLoginPrompt": "Log in to request a feature",
     "makerLabel": "By",
     "viewMakerProfile": "View maker profile",
-    "fairDealNote": "Cancel & refund terms are shown upfront. No hidden surprises."
+    "fairDealNote": "Cancel & refund terms are shown upfront. No hidden surprises.",
+    "share": "Share:",
+    "shareCopy": "Copy link",
+    "shareCopied": "Copied!"
   },
   "profileEdit": {
     "title": "Edit profile",

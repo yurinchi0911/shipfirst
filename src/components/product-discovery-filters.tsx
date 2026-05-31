@@ -20,7 +20,8 @@ export function ProductDiscoveryFilters() {
   const tag = searchParams.get("tag") ?? "";
   const maxPrice = searchParams.get("max_price") ?? "";
   const lsOnly = searchParams.get("ls_only") === "1";
-  const hasFilters = category || tag || maxPrice || lsOnly;
+  const query = searchParams.get("q") ?? "";
+  const hasFilters = category || tag || maxPrice || lsOnly || query;
 
   const update = useCallback(
     (key: string, value: string | null) => {
@@ -44,6 +45,16 @@ export function ProductDiscoveryFilters() {
   }
 
   return (
+    <div className="space-y-3">
+    {/* Search bar */}
+    <input
+      type="search"
+      value={query}
+      onChange={(e) => update("q", e.target.value || null)}
+      placeholder={t("searchPlaceholder")}
+      className="h-10 w-full rounded-xl border border-input bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+    />
+
     <div className="flex flex-wrap items-center gap-2 text-sm">
       {/* Category */}
       <select
@@ -110,6 +121,7 @@ export function ProductDiscoveryFilters() {
           {t("filterClear")}
         </button>
       )}
+    </div>
     </div>
   );
 }

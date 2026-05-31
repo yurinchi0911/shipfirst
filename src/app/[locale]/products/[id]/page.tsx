@@ -16,6 +16,7 @@ import { LsBadge } from "@/components/badges/ls-badge";
 import { BuyButton } from "@/components/product/buy-button";
 import { CheerButton } from "@/components/product/cheer-button";
 import { WishlistButton } from "@/components/product/wishlist-button";
+import { ShareButtons } from "@/components/product/share-buttons";
 import { CommentSection } from "@/components/product/comment-section";
 import { FeatureRequestSection } from "@/components/product/feature-request-section";
 import { buttonVariants } from "@/components/ui/button";
@@ -278,7 +279,7 @@ export default async function ProductDetailPage({
             </p>
           </div>
 
-          {/* Cheer + Wishlist */}
+          {/* Cheer + Wishlist + Share */}
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <CheerButton
               productId={id}
@@ -291,6 +292,9 @@ export default async function ProductDetailPage({
               initialWishlisted={userWishlisted}
               isLoggedIn={!!user}
             />
+            <div className="ml-auto">
+              <ShareButtons productId={id} productName={product.name} />
+            </div>
           </div>
 
           {/* Pre-purchase details */}

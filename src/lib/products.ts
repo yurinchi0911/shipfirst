@@ -133,6 +133,7 @@ export const PRODUCT_LIST_SELECT = `
   id, name, description, price_cents, currency, billing_type,
   fair_deal, published_at, early_backer_ends_at, early_backer_purchase_cap,
   purchase_count, category, problem_tags, cheer_count, maker_id,
+  thumbnail_url, lemon_squeezy_url,
   maker:profiles!maker_id (
     display_name,
     total_internal_revenue_cents, total_external_revenue_cents, graduated_at
