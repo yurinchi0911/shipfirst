@@ -39,7 +39,7 @@ export function ProductImageUpload({ productId, currentUrl }: Props) {
 
   return (
     <div className="space-y-2">
-      <p className="text-sm font-medium">サムネイル画像</p>
+      <p className="text-sm font-medium">Thumbnail image</p>
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
@@ -57,8 +57,8 @@ export function ProductImageUpload({ productId, currentUrl }: Props) {
         ) : (
           <div className="flex flex-col items-center gap-2 text-muted-foreground">
             <span className="text-3xl">🖼️</span>
-            <span className="text-sm">クリックして画像をアップロード</span>
-            <span className="text-xs opacity-60">PNG / JPG / WebP · 5MB以下</span>
+            <span className="text-sm">Click to upload image</span>
+            <span className="text-xs opacity-60">PNG / JPG / WebP · max 5 MB</span>
           </div>
         )}
         {isPending && (
@@ -78,7 +78,7 @@ export function ProductImageUpload({ productId, currentUrl }: Props) {
       {error && <p className="text-sm text-destructive">{error}</p>}
       {preview && !isPending && (
         <p className="text-xs text-muted-foreground">
-          画像が保存されました。クリックして変更できます。
+          Image saved. Click to change.
         </p>
       )}
     </div>

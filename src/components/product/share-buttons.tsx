@@ -42,7 +42,7 @@ export function ShareButtons({ productId, productName }: Props) {
       >
         <Button variant="outline" size="sm" className="gap-1.5 h-8 px-3 font-bold">
           <span className="text-xs font-black" aria-hidden>𝕏</span>
-          <span className="text-xs">ポスト</span>
+          <span className="text-xs">Post</span>
         </Button>
       </a>
       <Button

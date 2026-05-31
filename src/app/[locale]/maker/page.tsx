@@ -176,7 +176,7 @@ export default async function MakerPage({
                     href="/maker/setup"
                     className="text-xs font-medium text-yellow-700 underline-offset-4 hover:underline dark:text-yellow-400"
                   >
-                    セットアップガイドを見る →
+                    {t("lsSetupGuide")} →
                   </Link>
                 </div>
               </div>
