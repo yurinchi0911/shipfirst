@@ -11,6 +11,7 @@
     "navPurchasesShort": "購入",
     "navLogin": "ログイン",
     "navWishlist": "欲しいリスト",
+    "navMakers": "ランキング",
     "navMyPage": "ダッシュボード",
     "navPurchases": "購入履歴",
     "navLogout": "ログアウト",
@@ -56,6 +57,8 @@
     "filterClear": "フィルターを解除",
     "graduatingLabel": "もうすぐ卒業",
     "graduatingTip": "このメーカーは$700以上を稼いでおり、卒業（$1,000）に近づいています。",
+    "featuredTitle": "注目プロダクト",
+    "featuredSub": "特別掲載中",
     "howTitle": "3ステップで最初の販売へ",
     "howStep1Title": "プロダクトを掲載する（無料）",
     "howStep1Body": "LemonSqueezy でプロダクトを作成し、ShipFirst に登録するだけ。掲載費用は一切かかりません。",
@@ -253,6 +256,7 @@
   },
   "card": {
     "oneTime": "買い切り",
+    "purchased": "{count}件購入済",
     "subscription": "月額サブスク"
   },
   "badges": {
@@ -337,6 +341,18 @@
     "subAck": "サブスクの場合「いつでもキャンセル可能」への同意が必要です",
     "trialTerms": "トライアルありの場合、条件説明は50文字以上必要です",
     "notPublished": "公開状態のプロダクトのみ Fair Deal 認定されます"
+  },
+  "makers": {
+    "rankingTitle": "メーカーランキング",
+    "rankingSubtitle": "ShipFirst で活躍中のメーカーを累計収益順に表示しています。",
+    "rankingEmpty": "まだメーカーがいません。最初の1人になりましょう！",
+    "anonymous": "匿名メーカー",
+    "productCount": "{count}商品",
+    "rankingGraduated": "卒業メーカー（$1,000達成）",
+    "rankingGraduatedLabel": "卒業済",
+    "rankingCtaTitle": "あなたもランキングに載ろう",
+    "rankingCtaBody": "掲載無料。売れたら ShipFirst の 15% アフィリエイトで収益が自動分配。",
+    "rankingCta": "プロダクトを掲載する"
   },
   "validation": {
     "nameMin": "プロダクト名は3文字以上",

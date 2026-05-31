@@ -30,6 +30,9 @@ export type ProductListItem = {
   problem_tags: string[];
   cheer_count: number;
   maker_id: string;
+  is_featured: boolean;
+  thumbnail_url: string | null;
+  lemon_squeezy_url: string | null;
   maker: {
     display_name: string | null;
     total_internal_revenue_cents: number;
@@ -133,7 +136,7 @@ export const PRODUCT_LIST_SELECT = `
   id, name, description, price_cents, currency, billing_type,
   fair_deal, published_at, early_backer_ends_at, early_backer_purchase_cap,
   purchase_count, category, problem_tags, cheer_count, maker_id,
-  thumbnail_url, lemon_squeezy_url,
+  thumbnail_url, lemon_squeezy_url, is_featured,
   maker:profiles!maker_id (
     display_name,
     total_internal_revenue_cents, total_external_revenue_cents, graduated_at

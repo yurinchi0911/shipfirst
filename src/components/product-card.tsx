@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/utils";
 import {
   type ProductListItem,
   earlyBackerSlotsLeft,
@@ -15,20 +16,25 @@ import { FairDealBadge } from "@/components/badges/fair-deal-badge";
 import { EarlyBackerBadge } from "@/components/badges/early-backer-badge";
 import { LsBadge } from "@/components/badges/ls-badge";
 import { GraduatingBadge } from "@/components/badges/graduating-badge";
+import { FeaturedBadge } from "@/components/badges/featured-badge";
 
 export function ProductCard({ product }: { product: ProductListItem }) {
   const t = useTranslations("card");
   const showEarlyBacker = isEarlyBackerActive(product);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const hasLs = !!(product as any).lemon_squeezy_url;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const thumbnailUrl = (product as any).thumbnail_url as string | null ?? null;
+  const hasLs = !!product.lemon_squeezy_url;
+  const thumbnailUrl = product.thumbnail_url ?? null;
   const graduating = isGraduating(product);
+  const isFeatured = product.is_featured;
 
   return (
     <Link
       href={`/products/${product.id}`}
-      className="group flex flex-col rounded-2xl border border-border/80 bg-card overflow-hidden transition-all duration-200 hover:border-border hover:shadow-lg hover:shadow-black/[0.06] hover:-translate-y-0.5 active:translate-y-0 active:shadow-md"
+      className={cn(
+        "group flex flex-col rounded-2xl border bg-card overflow-hidden transition-all duration-200 hover:border-border hover:shadow-lg hover:shadow-black/[0.06] hover:-translate-y-0.5 active:translate-y-0 active:shadow-md",
+        isFeatured
+          ? "border-amber-400/50 shadow-amber-400/10 shadow-md ring-1 ring-amber-400/20"
+          : "border-border/80"
+      )}
     >
       {/* Thumbnail */}
       {thumbnailUrl && (
@@ -45,8 +51,9 @@ export function ProductCard({ product }: { product: ProductListItem }) {
 
       <div className="flex flex-1 flex-col p-5">
       {/* Badges */}
-      {(product.fair_deal || showEarlyBacker || hasLs || graduating) && (
+      {(isFeatured || product.fair_deal || showEarlyBacker || hasLs || graduating) && (
         <div className="mb-3 flex flex-wrap gap-1.5">
+          {isFeatured && <FeaturedBadge />}
           {product.fair_deal && <FairDealBadge />}
           {showEarlyBacker && <EarlyBackerBadge slotsLeft={earlyBackerSlotsLeft(product)} />}
           {hasLs && <LsBadge />}
@@ -80,6 +87,14 @@ export function ProductCard({ product }: { product: ProductListItem }) {
           <span>
             {product.billing_type === "subscription" ? t("subscription") : t("oneTime")}
           </span>
+          {product.purchase_count > 0 && (
+            <>
+              <span aria-hidden className="opacity-40">·</span>
+              <span className="font-medium text-foreground/70">
+                {t("purchased", { count: product.purchase_count })}
+              </span>
+            </>
+          )}
           {product.cheer_count > 0 && (
             <>
               <span aria-hidden className="opacity-40">·</span>

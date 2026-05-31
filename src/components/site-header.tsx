@@ -46,6 +46,12 @@ export async function SiteHeader() {
             {t("navProducts")}
           </Link>
           <Link
+            href="/makers"
+            className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "shrink-0")}
+          >
+            {t("navMakers")}
+          </Link>
+          <Link
             href="/maker/products/new"
             className={cn(
               buttonVariants({ variant: "ghost", size: "sm" }),

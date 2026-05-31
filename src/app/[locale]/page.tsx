@@ -113,6 +113,21 @@ export default async function HomePage({ params, searchParams }: PageProps) {
     : undefined;
 
   const t = await getTranslations("home");
+
+  // Featured 商品を別取得（フィルター・タブに関係なく常に先頭に表示）
+  const featuredProducts: ProductListItem[] = [];
+  if (isSupabaseConfigured()) {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("products")
+      .select(PRODUCT_LIST_SELECT)
+      .eq("status", "published")
+      .eq("is_featured", true)
+      .order("published_at", { ascending: false })
+      .limit(3);
+    if (data) featuredProducts.push(...(data as unknown as ProductListItem[]));
+  }
+
   const products = isSupabaseConfigured()
     ? await getProducts({
         tab,
@@ -250,6 +265,24 @@ export default async function HomePage({ params, searchParams }: PageProps) {
                 <span className="mt-1 text-xs text-muted-foreground">{label}</span>
               </div>
             ))}
+          </div>
+        </section>
+      )}
+
+      {/* ─── Featured ──────────────────────────────────────────────── */}
+      {featuredProducts.length > 0 && (
+        <section className="border-b border-border/50 bg-amber-50/40 dark:bg-amber-950/10">
+          <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
+            <div className="mb-6 flex items-center gap-2">
+              <span className="text-lg" aria-hidden>⭐</span>
+              <h2 className="text-base font-bold tracking-tight">{t("featuredTitle")}</h2>
+              <span className="ml-auto text-xs text-muted-foreground">{t("featuredSub")}</span>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {featuredProducts.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
           </div>
         </section>
       )}
