@@ -3,8 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { routing } from "@/i18n/routing";
-import { sendCheerNotification, sendCommentNotification } from "@/lib/email";
-
 type ActionResult = { error?: string; success?: boolean };
 
 async function requireAuth() {
@@ -62,7 +60,7 @@ export async function toggleCheer(
   await supabase.from("cheer_reactions").insert({ product_id: productId, user_id: user.id });
   const { data: latestProd } = await supabase
     .from("products")
-    .select("cheer_count, name, maker_id")
+    .select("cheer_count")
     .eq("id", productId)
     .single();
   if (latestProd) {
@@ -70,27 +68,6 @@ export async function toggleCheer(
       .from("products")
       .update({ cheer_count: latestProd.cheer_count + 1 })
       .eq("id", productId);
-
-    // メーカーにメール通知（fire-and-forget）
-    const { data: cheerer } = await supabase
-      .from("profiles")
-      .select("display_name")
-      .eq("id", user.id)
-      .single();
-    const { data: maker } = await supabase
-      .from("profiles")
-      .select("email, display_name")
-      .eq("id", latestProd.maker_id)
-      .single();
-    if (maker && maker.email && latestProd.maker_id !== user.id) {
-      sendCheerNotification({
-        makerEmail: maker.email,
-        makerName: maker.display_name ?? "メーカー",
-        productName: latestProd.name,
-        productId,
-        cheererName: cheerer?.display_name ?? undefined,
-      }).catch(() => {});
-    }
   }
   revalidateProduct(productId);
   return { success: true, cheered: true };
@@ -115,30 +92,6 @@ export async function addComment(
   });
 
   if (error) return { error: error.message };
-
-  // メーカーにメール通知（fire-and-forget）
-  const { data: product } = await supabase
-    .from("products")
-    .select("name, maker_id")
-    .eq("id", productId)
-    .single();
-  if (product) {
-    const [{ data: commenter }, { data: maker }] = await Promise.all([
-      supabase.from("profiles").select("display_name").eq("id", user.id).single(),
-      supabase.from("profiles").select("email, display_name").eq("id", product.maker_id).single(),
-    ]);
-    if (maker && maker.email && product.maker_id !== user.id) {
-      sendCommentNotification({
-        makerEmail: maker.email,
-        makerName: maker.display_name ?? "メーカー",
-        productName: product.name,
-        productId,
-        commenterName: commenter?.display_name ?? undefined,
-        commentBody: trimmed,
-      }).catch(() => {});
-    }
-  }
-
   revalidateProduct(productId);
   return { success: true };
 }
