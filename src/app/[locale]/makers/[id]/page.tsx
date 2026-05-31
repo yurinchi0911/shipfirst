@@ -26,10 +26,36 @@ export async function generateMetadata({
   const supabase = await createClient();
   const { data } = await supabase
     .from("profiles")
-    .select("display_name")
+    .select("display_name, bio")
     .eq("id", id)
     .single();
-  return { title: data?.display_name ?? "Maker" };
+
+  const name = data?.display_name ?? "Maker";
+  const description = data?.bio
+    ? `${data.bio.slice(0, 140)} — ShipFirst`
+    : `${name}'s products on ShipFirst — the marketplace for first-time makers.`;
+
+  return {
+    title: `${name}'s products`,
+    description,
+    openGraph: {
+      title: `${name} | ShipFirst`,
+      description,
+      images: [
+        {
+          url: `/api/og?title=${encodeURIComponent(name)}&sub=${encodeURIComponent(description)}&type=maker`,
+          width: 1200,
+          height: 630,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${name} | ShipFirst`,
+      description,
+      images: [`/api/og?title=${encodeURIComponent(name)}&sub=${encodeURIComponent(description)}&type=maker`],
+    },
+  };
 }
 
 export default async function MakerProfilePage({

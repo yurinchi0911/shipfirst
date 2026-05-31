@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { ProductForm } from "@/components/maker/product-form";
+import { ProductImageUpload } from "@/components/maker/product-image-upload";
 import { productToFormDefaults } from "@/lib/product-form-defaults";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/env";
@@ -48,7 +49,7 @@ export default async function EditProductPage({
   const { data: product } = await supabase
     .from("products")
     .select(
-      "id, name, description, price_cents, billing_type, trial_days, trial_terms, cancel_url, refund_policy, refund_policy_template_id, cancel_policy_ack, delivery_url, status, maker_id, category, problem_tags"
+      "id, name, description, price_cents, billing_type, trial_days, trial_terms, cancel_url, refund_policy, refund_policy_template_id, cancel_policy_ack, delivery_url, lemon_squeezy_url, thumbnail_url, status, maker_id, category, problem_tags"
     )
     .eq("id", id)
     .single();
@@ -72,7 +73,9 @@ export default async function EditProductPage({
           {t("draftSaved")}
         </p>
       )}
-      <div className="mt-8">
+      <div className="mt-8 space-y-8">
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        <ProductImageUpload productId={product.id} currentUrl={(product as any).thumbnail_url} />
         <ProductForm
           defaults={productToFormDefaults(product)}
           productId={product.id}

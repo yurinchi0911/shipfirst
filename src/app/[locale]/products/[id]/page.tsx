@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured, buildLsAffiliateUrl } from "@/lib/env";
+import Image from "next/image";
 import {
   earlyBackerSlotsLeft,
   formatPrice,
@@ -91,7 +92,44 @@ export async function generateMetadata({
   const { id } = await params;
   if (!isSupabaseConfigured()) return { title: "Product" };
   const product = await getProduct(id);
-  return { title: product?.name ?? "Product" };
+  if (!product) return { title: "Product" };
+
+  const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://shipfirst.vercel.app";
+  const maker = Array.isArray(product.maker) ? product.maker[0] : product.maker;
+  const description = product.description.slice(0, 160);
+  const productUrl = `${APP_URL}/products/${id}`;
+
+  return {
+    title: product.name,
+    description,
+    openGraph: {
+      type: "website",
+      url: productUrl,
+      title: `${product.name} | ShipFirst`,
+      description,
+      images: [
+        {
+          url: `${APP_URL}/api/og?title=${encodeURIComponent(product.name)}&sub=${encodeURIComponent(description)}&type=product`,
+          width: 1200,
+          height: 630,
+          alt: product.name,
+        },
+      ],
+      siteName: "ShipFirst",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.name} | ShipFirst`,
+      description,
+      images: [`${APP_URL}/api/og?title=${encodeURIComponent(product.name)}&sub=${encodeURIComponent(description)}&type=product`],
+    },
+    alternates: {
+      canonical: productUrl,
+    },
+    other: {
+      "product:maker": maker?.display_name ?? "",
+    },
+  };
 }
 
 export default async function ProductDetailPage({
@@ -143,6 +181,8 @@ export default async function ProductDetailPage({
   const maker = Array.isArray(product.maker) ? product.maker[0] : product.maker;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const rawLsUrl = (product as any).lemon_squeezy_url as string | null ?? null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const thumbnailUrl = (product as any).thumbnail_url as string | null ?? null;
   const affiliateUrl = rawLsUrl ? buildLsAffiliateUrl(rawLsUrl) : null;
 
   return (
@@ -170,6 +210,20 @@ export default async function ProductDetailPage({
                 <EarlyBackerBadge slotsLeft={earlyBackerSlotsLeft(product)} />
               )}
               {rawLsUrl && <LsBadge />}
+            </div>
+          )}
+
+          {/* Thumbnail */}
+          {thumbnailUrl && (
+            <div className="mb-6 overflow-hidden rounded-2xl border bg-muted/20">
+              <Image
+                src={thumbnailUrl}
+                alt={product.name}
+                width={800}
+                height={400}
+                className="w-full object-cover"
+                unoptimized
+              />
             </div>
           )}
 

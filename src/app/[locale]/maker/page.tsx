@@ -163,14 +163,22 @@ export default async function MakerPage({
               <div>
                 <p className="text-sm font-semibold">{t("lsSetupTitle")}</p>
                 <p className="mt-0.5 text-xs text-muted-foreground">{t("lsSetupBody")}</p>
-                <a
-                  href="https://app.lemonsqueezy.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 inline-block text-xs font-medium text-yellow-700 underline-offset-4 hover:underline dark:text-yellow-400"
-                >
-                  {t("lsSetupLink")} →
-                </a>
+                <div className="mt-2 flex flex-wrap gap-3">
+                  <a
+                    href="https://app.lemonsqueezy.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-medium text-yellow-700 underline-offset-4 hover:underline dark:text-yellow-400"
+                  >
+                    {t("lsSetupLink")} ↗
+                  </a>
+                  <Link
+                    href="/maker/setup"
+                    className="text-xs font-medium text-yellow-700 underline-offset-4 hover:underline dark:text-yellow-400"
+                  >
+                    セットアップガイドを見る →
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
